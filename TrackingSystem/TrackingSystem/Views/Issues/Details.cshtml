@@ -1,0 +1,43 @@
+﻿@model TrackingSystem.Models.Issue
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>
+    Details</h2>
+<fieldset>
+    <legend>Issue</legend>
+    <div class="display-label">
+        @Html.LabelFor(model => model.Title)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Title)
+    </div>
+    <br />
+    <div class="display-label">
+        @Html.LabelFor(model => model.Description)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Description)
+    </div>
+    <br />
+    <div class="display-label">
+        @Html.LabelFor(model => model.Created)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Created)
+    </div>
+    <br />
+    <div class="display-label">
+        @Html.LabelFor(model => model.AssignedTo.FullName)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.AssignedTo.FullName)
+    </div>
+    <br />
+    <div class="display-label">
+        @Html.LabelFor(model => model.Status.Name)</div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Status.Name)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "List")
+</p>

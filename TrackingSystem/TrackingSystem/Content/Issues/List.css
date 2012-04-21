@@ -1,0 +1,36 @@
+﻿table
+{
+    border-spacing: 0;
+}
+
+td
+{
+    border: 1px outset #808080;
+    padding: 10px;
+}
+
+th
+{
+    border: 1px outset #CCCCCC;
+    background-color: #0F5CFF;
+    color: #FFFF00;
+    font-size: 16px;
+}
+
+tr:hover
+{
+    background-color: #003399;
+}
+
+.item-list
+{
+    list-style-type: none;
+    height: 30px;
+    padding: 0;
+}
+
+.item-list li
+{
+    float: left;
+    margin: 0 10px 0 0;
+}
