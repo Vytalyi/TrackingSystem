@@ -11,10 +11,34 @@ namespace TrackingSystem.Controllers
     public class IssuesController : BaseController
     {
         [HttpGet]
-        public ActionResult List(IEnumerable<Issue> viewModel)
+        public ActionResult List(string sort)
         {
-            if (viewModel == null)
-                viewModel = repo.GetIssues();
+            IEnumerable<Issue> viewModel;
+
+            switch (sort)
+            {
+                case "id":
+                    viewModel = repo.GetIssues().OrderBy(r => r.Id);
+                    break;
+                case "title":
+                    viewModel = repo.GetIssues().OrderBy(r => r.Title);
+                    break;
+                case "description":
+                    viewModel = repo.GetIssues().OrderBy(r => r.Description);
+                    break;
+                case "created":
+                    viewModel = repo.GetIssues().OrderBy(r => r.Created);
+                    break;
+                case "assigned":
+                    viewModel = repo.GetIssues().OrderBy(r => r.AssignedTo.FullName);
+                    break;
+                case "status":
+                    viewModel = repo.GetIssues().OrderBy(r => r.Status.Name);
+                    break;
+                default:
+                    viewModel = repo.GetIssues();
+                    break;
+            }
 
             return View(viewModel);
         }
