@@ -111,6 +111,7 @@ header, footer, nav, section
 	color: #FFFFCC;
 	border-radius: 5px;
 	border: 0;
+	cursor: pointer;
 }
 .btn-action
 {
@@ -120,6 +121,8 @@ header, footer, nav, section
 	color: #FFFFCC;
 	border-radius: 5px;
 	border: 0;
+	font-weight: bold;
+	cursor: pointer;
 }
 .btn-action:hover
 {
