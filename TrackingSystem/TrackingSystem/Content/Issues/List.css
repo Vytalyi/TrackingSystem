@@ -16,6 +16,10 @@ th
     color: #FFFF00;
     font-size: 16px;
 }
+th:hover
+{
+    background-color: #950000;
+}
 
 tr:hover
 {
