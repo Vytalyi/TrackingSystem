@@ -18,5 +18,7 @@ namespace TrackingSystem.Models
         public Status Status { get; set; }
 
         public DateTime Created { get; set; }
+
+		public IEnumerable<Comment> Comments { get; set; }
     }
 }

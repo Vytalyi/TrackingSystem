@@ -16,5 +16,7 @@ namespace TrackingSystem.Models.Repository
         IEnumerable<User> GetUsers();
 
         IEnumerable<Status> GetStatuses();
+
+		IEnumerable<Comment> GetCommentsForIssue(int issueId);
     }
 }

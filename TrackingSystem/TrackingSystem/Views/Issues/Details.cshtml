@@ -39,6 +39,15 @@
 	<div class="display-field">
 		@Html.DisplayFor(model => model.Status.Name)
 	</div>
+	<br />
+	<div class="display-label">
+		Comments</div>
+	@foreach (TrackingSystem.Models.Comment comment in Model.Comments)
+ {
+		<div class="display-field">
+			@Html.DisplayFor(model => comment.Created) : @Html.DisplayFor(model => comment.Message)
+		</div>
+ }
 </fieldset>
 <p>
 	@Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn" })

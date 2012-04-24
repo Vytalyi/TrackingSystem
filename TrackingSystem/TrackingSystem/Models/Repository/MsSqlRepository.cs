@@ -48,6 +48,8 @@ namespace TrackingSystem.Models.Repository
                 }
             }
 
+			issue.Comments = GetCommentsForIssue(issue.Id);
+
             return issue;
         }
 
@@ -76,6 +78,11 @@ namespace TrackingSystem.Models.Repository
                     }
                 }
             }
+
+			foreach (Issue issue in list)
+			{
+				issue.Comments = GetCommentsForIssue(issue.Id);
+			}
 
             return list;
         }
@@ -131,6 +138,35 @@ namespace TrackingSystem.Models.Repository
 
             return list;
         }
+
+		public IEnumerable<Comment> GetCommentsForIssue(int issueId)
+		{
+			List<Comment> list = new List<Comment>();
+
+            using (SqlConnection con = new SqlConnection(ConnStr))
+            {
+                con.Open();
+
+                string txt = @"
+                    SELECT Id, Message, Created, Issue_Id
+                    FROM Comments
+					WHERE Issue_Id = @issueId";
+                using (SqlCommand cmd = new SqlCommand(txt, con))
+                {
+					cmd.Parameters.AddWithValue("@issueId", issueId);
+
+                    SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                    while (rdr.Read())
+                    {
+                        Comment comment = ModelParser.ParseComment((int)rdr[0], (string)rdr[1], DateTime.Parse(rdr[2].ToString()), (int)rdr[3]);
+
+						list.Add(comment);
+                    }
+                }
+            }
+
+            return list;
+		}
 
         #endregion
 

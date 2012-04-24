@@ -40,5 +40,16 @@ namespace TrackingSystem.Models.Repository
             
             return status;
         }
+
+		public static Comment ParseComment(int id, string message, DateTime created, int issueId)
+		{
+			Comment comment = new Comment();
+			comment.Id = id;
+			comment.Message = message;
+			comment.Created = created;
+			comment.Issue_Id = issueId;
+
+			return comment;
+		}
     }
 }
