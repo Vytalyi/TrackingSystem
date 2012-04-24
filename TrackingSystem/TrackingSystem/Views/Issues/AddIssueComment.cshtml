@@ -17,7 +17,7 @@
 			@Html.LabelFor(model => model.Message)
 		</div>
 		<div class="editor-field">
-			@Html.EditorFor(model => model.Message)
+			@Html.TextAreaFor(model => model.Message)
 			@Html.ValidationMessageFor(model => model.Message)
 		</div>
 		<p>
@@ -26,5 +26,5 @@
 	</fieldset>
 }
 <div>
-	@Html.ActionLink("Back to List", "List")
+	@Html.ActionLink("Back to List", "List", null, new { @class = "btn" })
 </div>

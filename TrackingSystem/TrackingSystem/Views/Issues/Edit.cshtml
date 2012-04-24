@@ -54,6 +54,16 @@
 				})).ToHtmlString()
 			)
 		</div>
+		<div class="editor-label">
+			Comments
+		</div>
+		@foreach (TrackingSystem.Models.Comment comment in Model.Comments)
+  {
+			<div class="display-field">
+				@Html.DisplayFor(model => comment.Created) : @Html.DisplayFor(model => comment.Message)
+				(@Html.ActionLink("delete", "DeleteComment", new { id = comment.Id, issueId = comment.Issue_Id }))
+			</div>
+  }
 		<p>
 			<input type="submit" value="Save" class="btn" />
 		</p>

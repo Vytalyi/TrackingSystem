@@ -18,5 +18,6 @@ namespace TrackingSystem.Models.Repository
         IEnumerable<Status> GetStatuses();
 
 		IEnumerable<Comment> GetCommentsForIssue(int issueId);
+		void DeleteComment(int id);
     }
 }

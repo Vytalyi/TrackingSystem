@@ -111,5 +111,12 @@ namespace TrackingSystem.Controllers
 
 			return RedirectToAction("List");
 		}
+
+		public ActionResult DeleteComment(int id, int issueId)
+		{
+			repo.DeleteComment(id);
+
+			return RedirectToAction("Edit", new { id = issueId });
+		}
     }
 }

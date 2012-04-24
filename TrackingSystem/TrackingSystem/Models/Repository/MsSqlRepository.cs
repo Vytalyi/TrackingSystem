@@ -262,6 +262,23 @@ namespace TrackingSystem.Models.Repository
             }
         }
 
+		public void DeleteComment(int id)
+		{
+			using (SqlConnection con = new SqlConnection(ConnStr))
+			{
+				con.Open();
+
+				string txt = @"
+                    DELETE FROM Comments
+                    WHERE Id = @Id";
+				using (SqlCommand cmd = new SqlCommand(txt, con))
+				{
+					cmd.Parameters.AddWithValue("@Id", id);
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
         #endregion
     }
 }
