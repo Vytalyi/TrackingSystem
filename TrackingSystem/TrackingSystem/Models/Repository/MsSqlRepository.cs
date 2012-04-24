@@ -222,6 +222,25 @@ namespace TrackingSystem.Models.Repository
             }
         }
 
+		public void AddComment(Comment newComment)
+		{
+			using (SqlConnection con = new SqlConnection(ConnStr))
+			{
+				con.Open();
+
+				string txt = @"
+                    INSERT INTO Comments (Message, Issue_Id)
+                    VALUES (@Message, @Issue_Id)
+                ";
+				using (SqlCommand cmd = new SqlCommand(txt, con))
+				{
+					cmd.Parameters.AddWithValue("@Message", newComment.Message);
+					cmd.Parameters.AddWithValue("@Issue_Id", newComment.Issue_Id);
+					cmd.ExecuteNonQuery();
+				}
+			}
+		}
+
         #endregion
 
         #region delete

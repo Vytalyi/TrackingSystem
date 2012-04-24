@@ -94,5 +94,22 @@ namespace TrackingSystem.Controllers
 
             return RedirectToAction("List");
         }
+
+		[HttpGet]
+		public ActionResult AddIssueComment(int id)
+		{
+			var viewModel = new Comment();
+			viewModel.Issue_Id = id;
+
+			return View(viewModel);
+		}
+
+		[HttpPost]
+		public ActionResult AddIssueComment(Comment comment)
+		{
+			repo.AddComment(comment);
+
+			return RedirectToAction("List");
+		}
     }
 }
