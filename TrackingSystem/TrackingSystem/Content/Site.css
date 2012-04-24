@@ -16,6 +16,11 @@ a
 	text-decoration: underline;
 	color: #FFFFCC;
 }
+hr.horizontal-line
+{
+	margin-top: 10px;
+	margin-bottom: 20px;
+}
 th a
 {
 	text-decoration: none;
@@ -115,7 +120,7 @@ header, footer, nav, section
 }
 .btn-action
 {
-	background-color: #0F5CFF;
+	background-color: #950000;
 	padding: 2px 5px 2px 5px;
 	text-decoration: none;
 	color: #FFFFCC;
@@ -126,7 +131,7 @@ header, footer, nav, section
 }
 .btn-action:hover
 {
-	background-color: #950000;
+	background-color: #0F5CFF;
 }
 .btn:hover
 {

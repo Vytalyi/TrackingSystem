@@ -15,90 +15,98 @@
 				else
 					$('td.' + selector + ',th.' + selector).show(300);
 			})
+			$('#ShowHideFilterBtn').click(function () {
+				var selector = $('.filter-list');
+				if (selector.css('display') == 'none')
+					selector.show(300);
+				else
+					selector.hide(300);
+			})
 			// ------------
 		})
 	</script>
 }
-<h2>
-	Issue List</h2>
+<div class="page-title">
+	Issue list:</div>
+	<hr class="horizontal-line" />
+<input type="button" id="ShowHideFilterBtn" value="Column Filter" class="btn" />
+<ul class="filter-list">
+	<li>@Html.CheckBox("Id", true)
+		<label for="Id">
+			Id</label></li>
+	<li>@Html.CheckBox("Title", true)
+		<label for="Title">
+			Title</label></li>
+	<li>@Html.CheckBox("Description", true)
+		<label for="Description">
+			Description</label></li>
+	<li>@Html.CheckBox("Created", true)
+		<label for="Created">
+			Created</label></li>
+	<li>@Html.CheckBox("Assigned", true)
+		<label for="Assigned">
+			Assigned</label></li>
+	<li>@Html.CheckBox("Status", true)
+		<label for="Status">
+			Status</label></li>
+	<li>@Html.CheckBox("Actions", true)
+		<label for="Actions">
+			Actions</label></li>
+</ul>
+<div class="issue-list-wrapper">
+	<table class="issue-list">
+		<tr>
+			<th class="Id">
+				@Html.ActionLink("Id", "List", new { sort = "id" }, null)
+			</th>
+			<th class="Title">
+				@Html.ActionLink("Title", "List", new { sort = "title" }, null)
+			</th>
+			<th class="Description">
+				@Html.ActionLink("Description", "List", new { sort = "description" }, null)
+			</th>
+			<th class="Created">
+				@Html.ActionLink("Created", "List", new { sort = "created" }, null)
+			</th>
+			<th class="Assigned">
+				@Html.ActionLink("Assigned", "List", new { sort = "assigned" }, null)
+			</th>
+			<th class="Status">
+				@Html.ActionLink("Status", "List", new { sort = "status" }, null)
+			</th>
+			<th class="Actions">
+				Actions
+			</th>
+		</tr>
+		@foreach (var item in Model)
+  {
+			<tr>
+				<td class="Id">
+					@Html.DisplayFor(modelItem => item.Id)
+				</td>
+				<td class="Title">
+					<a href='@Url.Action("Details", new { id = item.Id })'>@Html.DisplayFor(modelItem => item.Title)</a>
+				</td>
+				<td class="Description">
+					@Html.DisplayFor(modelItem => item.Description)
+				</td>
+				<td class="Created">
+					@Html.DisplayFor(modelItem => item.Created)
+				</td>
+				<td class="Assigned">
+					@Html.DisplayFor(modelItem => item.AssignedTo.FullName)
+				</td>
+				<td class="Status">
+					@Html.DisplayFor(modelItem => item.Status.Name)
+				</td>
+				<td class="Actions">
+					@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn-action" })
+					@Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn-action" })
+				</td>
+			</tr>
+  }
+	</table>
+</div>
 <p>
 	@Html.ActionLink("Create New", "Add", null, new { @class = "btn" })
 </p>
-<div>
-	<ul class="item-list">
-		<li>Column filter:</li>
-		<li>@Html.CheckBox("Id", true)
-			<label for="Id">
-				Id</label></li>
-		<li>@Html.CheckBox("Title", true)
-			<label for="Title">
-				Title</label></li>
-		<li>@Html.CheckBox("Description", true)
-			<label for="Description">
-				Description</label></li>
-		<li>@Html.CheckBox("Created", true)
-			<label for="Created">
-				Created</label></li>
-		<li>@Html.CheckBox("Assigned", true)
-			<label for="Assigned">
-				Assigned</label></li>
-		<li>@Html.CheckBox("Status", true)
-			<label for="Status">
-				Status</label></li>
-		<li>@Html.CheckBox("Actions", true)
-			<label for="Actions">
-				Actions</label></li>
-	</ul>
-</div>
-<table>
-	<tr>
-		<th class="Id">
-			@Html.ActionLink("Id", "List", new { sort = "id" }, null)
-		</th>
-		<th class="Title">
-			@Html.ActionLink("Title", "List", new { sort = "title" }, null)
-		</th>
-		<th class="Description">
-			@Html.ActionLink("Description", "List", new { sort = "description" }, null)
-		</th>
-		<th class="Created">
-			@Html.ActionLink("Created", "List", new { sort = "created" }, null)
-		</th>
-		<th class="Assigned">
-			@Html.ActionLink("Assigned", "List", new { sort = "assigned" }, null)
-		</th>
-		<th class="Status">
-			@Html.ActionLink("Status", "List", new { sort = "status" }, null)
-		</th>
-		<th class="Actions">
-			Actions
-		</th>
-	</tr>
-	@foreach (var item in Model)
- {
-		<tr>
-			<td class="Id">
-				@Html.DisplayFor(modelItem => item.Id)
-			</td>
-			<td class="Title">
-				<a href='@Url.Action("Details", new { id = item.Id })'>@Html.DisplayFor(modelItem => item.Title)</a>
-			</td>
-			<td class="Description">
-				@Html.DisplayFor(modelItem => item.Description)
-			</td>
-			<td class="Created">
-				@Html.DisplayFor(modelItem => item.Created)
-			</td>
-			<td class="Assigned">
-				@Html.DisplayFor(modelItem => item.AssignedTo.FullName)
-			</td>
-			<td class="Status">
-				@Html.DisplayFor(modelItem => item.Status.Name)
-			</td>
-			<td class="Actions">
-				@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn-action" })
-				@Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn-action" })
-			</td>
-		</tr>
- }
-</table>

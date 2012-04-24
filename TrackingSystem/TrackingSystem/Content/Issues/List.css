@@ -1,40 +1,63 @@
-﻿table
+﻿.page-title
 {
-    border-spacing: 0;
+	font-size: 20px;
+	font-variant: small-caps;
+	font-weight: bold;
 }
 
-td
+.filter-list
+{
+    list-style-type: none;
+    height: 35px;
+    margin: 0 0px 10px 0px;
+    padding: 0 10px 0 10px;
+    display: none;
+    background-color: #3D7900;
+    font-size: 14px;
+}
+
+.filter-list li
+{
+    float: left;
+    margin: 10px 30px 10px 0;
+}
+
+.filter-list label,
+.filter-list input
+{
+	cursor:pointer;
+}
+
+.issue-list
+{
+	border-spacing: 0;
+	width: 100%;
+}
+
+.issue-list-wrapper
+{
+	margin: 20px 0 20px 0;
+}
+
+.issue-list td
 {
     border: 1px outset #808080;
     padding: 10px;
 }
 
-th
+.issue-list th
 {
     border: 1px outset #CCCCCC;
-    background-color: #0F5CFF;
+    background-color: #950000;
     color: #FFFF00;
     font-size: 16px;
 }
-th:hover
+.issue-list th:hover
 {
-    background-color: #950000;
+    background-color: #0F5CFF;
 }
 
-tr:hover
+.issue-list tr:hover
 {
     background-color: #003399;
-}
-
-.item-list
-{
-    list-style-type: none;
-    height: 30px;
-    padding: 0;
-}
-
-.item-list li
-{
-    float: left;
-    margin: 0 10px 0 0;
 }
