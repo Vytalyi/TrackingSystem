@@ -17,7 +17,7 @@
 			@Html.LabelFor(model => model.Message)
 		</div>
 		<div class="editor-field">
-			@Html.TextAreaFor(model => model.Message)
+			@Html.TextAreaFor(model => model.Message, new { cols = "70", rows = "10" })
 			@Html.ValidationMessageFor(model => model.Message)
 		</div>
 		<p>

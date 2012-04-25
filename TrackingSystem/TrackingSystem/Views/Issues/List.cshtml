@@ -28,7 +28,7 @@
 }
 <div class="page-title">
 	Issue list:</div>
-	<hr class="horizontal-line" />
+<hr class="horizontal-line" />
 <input type="button" id="ShowHideFilterBtn" value="Column Filter" class="btn" />
 <ul class="filter-list">
 	<li>@Html.CheckBox("Id", true)
@@ -88,7 +88,18 @@
 					<a href='@Url.Action("Details", new { id = item.Id })'>@Html.DisplayFor(modelItem => item.Title)</a>
 				</td>
 				<td class="Description">
-					@Html.DisplayFor(modelItem => item.Description)
+					@if (item.Description.Length > 128)
+					{
+						@Html.Raw(
+							item.Description.Substring(0, 128) +"..."
+						)
+					}
+					else
+					{
+						@Html.Raw(
+							item.Description
+						)
+					}
 				</td>
 				<td class="Created">
 					@Html.DisplayFor(modelItem => item.Created)

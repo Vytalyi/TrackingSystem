@@ -19,7 +19,9 @@
 	<div class="display-label">
 		@Html.LabelFor(model => model.Description)</div>
 	<div class="display-field">
-		@Html.DisplayFor(model => model.Description)
+		@Html.Raw(
+			Model.Description
+		)
 	</div>
 	<br />
 	<div class="display-label">
@@ -42,12 +44,23 @@
 	<br />
 	<div class="display-label">
 		Comments</div>
-	@foreach (TrackingSystem.Models.Comment comment in Model.Comments)
- {
-		<div class="display-field">
-			@Html.DisplayFor(model => comment.Created) : @Html.DisplayFor(model => comment.Message)
-		</div>
- }
+	<table>
+		@foreach (TrackingSystem.Models.Comment comment in Model.Comments)
+  {
+			<tr>
+				<td>
+					<div class="display-field">
+						@Html.DisplayFor(model => comment.Created):
+					</div>
+				</td>
+				<td>
+					<div class="display-field">
+						@Html.Raw(comment.Message)
+					</div>
+				</td>
+			</tr>
+  }
+	</table>
 </fieldset>
 <p>
 	@Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn" })
