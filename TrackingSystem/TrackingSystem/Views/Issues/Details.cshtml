@@ -6,54 +6,62 @@
 		SetCurrentTab('issues');
 	</script>
 }
-@Html.Partial("_PageTitle", "Issue details:");
+@Html.Partial("_PageTitle", "Issue details:")
 <fieldset>
-	<legend>@Html.DisplayFor(model => model.Title)</legend>
-	<div class="display-label">
-		@Html.LabelFor(model => model.Description)</div>
+	<legend>@Html.LabelFor(model => model.Title)</legend>
 	<div class="display-field">
-		@Html.Raw(
+		@Html.DisplayFor(model => model.Title)</div>
+</fieldset>
+<fieldset>
+	<legend>@Html.LabelFor(model => model.Description)</legend>
+	<div class="display-field">
+	@Html.Raw(
 			Model.Description
 		)
-	</div>
-	<br />
-	<div class="display-label">
-		@Html.LabelFor(model => model.Created)</div>
+</fieldset>
+<fieldset>
+	<legend>@Html.LabelFor(model => model.Created)</legend>
 	<div class="display-field">
-		@Html.DisplayFor(model => model.Created)
-	</div>
-	<br />
-	<div class="display-label">
-		@Html.LabelFor(model => model.AssignedTo.FullName)</div>
+	@Html.DisplayFor(model => model.Created)
+</fieldset>
+<fieldset>
+	<legend>@Html.LabelFor(model => model.AssignedTo.FullName)</legend>
 	<div class="display-field">
-		@Html.DisplayFor(model => model.AssignedTo.FullName)
-	</div>
-	<br />
-	<div class="display-label">
-		@Html.LabelFor(model => model.Status.Name)</div>
+	@Html.DisplayFor(model => model.AssignedTo.FullName)
+</fieldset>
+<fieldset>
+	<legend>@Html.LabelFor(model => model.Status.Name)</legend>
 	<div class="display-field">
-		@Html.DisplayFor(model => model.Status.Name)
-	</div>
-	<br />
-	<div class="display-label">
-		Comments</div>
-	<table>
-		@foreach (TrackingSystem.Models.Comment comment in Model.Comments)
-  {
-			<tr>
-				<td>
-					<div class="display-field">
-						@Html.DisplayFor(model => comment.Created):
-					</div>
-				</td>
-				<td>
-					<div class="display-field">
-						@Html.Raw(comment.Message)
-					</div>
-				</td>
-			</tr>
-  }
-	</table>
+	@Html.DisplayFor(model => model.Status.Name)
+</fieldset>
+<fieldset>
+	<legend>Comments</legend>
+	@if (Model.Comments.Count() > 0)
+	{
+		<table>
+			@foreach (TrackingSystem.Models.Comment comment in Model.Comments)
+			{
+				<tr>
+					<td>
+						<div class="display-field">
+							@Html.DisplayFor(model => comment.Created):
+						</div>
+					</td>
+					<td>
+						<div class="display-field">
+							@Html.Raw(comment.Message)
+						</div>
+					</td>
+				</tr>
+			}
+		</table>
+	}
+	else
+	{
+		<div class="display-field">
+			No comments yet
+		</div>
+	}
 </fieldset>
 <p>
 	@Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn" })

@@ -8,30 +8,27 @@
 }
 <script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
 <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
-@Html.Partial("_PageTitle", "Create new issue:");
+@Html.Partial("_PageTitle", "Create new issue:")
 @using (Html.BeginForm())
 {
 	@Html.ValidationSummary(true)
 	<fieldset>
-		<legend>Specify issue information</legend>
-		<div class="editor-label">
-			@Html.LabelFor(model => model.Title)
-		</div>
+		<legend>@Html.LabelFor(model => model.Title)</legend>
 		<div class="editor-field">
 			@Html.EditorFor(model => model.Title)
 			@Html.ValidationMessageFor(model => model.Title)
 		</div>
-		<div class="editor-label">
-			@Html.LabelFor(model => model.Description)
-		</div>
+	</fieldset>
+	<fieldset>
+		<legend>@Html.LabelFor(model => model.Description)</legend>
 		<div class="editor-field">
-			@Html.TextAreaFor(model => model.Description)
+			@Html.TextAreaFor(model => model.Description, new { cols = 70, rows = 10 })
 			@Html.ValidationMessageFor(model => model.Description)
 		</div>
-		<p>
-			<input type="submit" value="Create" class="btn" />
-		</p>
 	</fieldset>
+	<p>
+		<input type="submit" value="Create" class="btn" />
+	</p>
 }
 <div>
 	@Html.ActionLink("Back to List", "List", null, new { @class = "btn" })
