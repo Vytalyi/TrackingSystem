@@ -26,9 +26,7 @@
 		})
 	</script>
 }
-<div class="page-title">
-	Issue list:</div>
-<hr class="horizontal-line" />
+@Html.Partial("_PageTitle", "Issue list:");
 <input type="button" id="ShowHideFilterBtn" value="Column Filter" class="btn" />
 <ul class="filter-list">
 	<li>@Html.CheckBox("Id", true)
@@ -89,17 +87,17 @@
 				</td>
 				<td class="Description">
 					@if (item.Description.Length > 128)
-					{
+	 {
 						@Html.Raw(
-							item.Description.Substring(0, 128) +"..."
+							item.Description.Substring(0, 128) + "..."
 						)
-					}
-					else
-					{
+	 }
+	 else
+	 {
 						@Html.Raw(
 							item.Description
 						)
-					}
+	 }
 				</td>
 				<td class="Created">
 					@Html.DisplayFor(modelItem => item.Created)

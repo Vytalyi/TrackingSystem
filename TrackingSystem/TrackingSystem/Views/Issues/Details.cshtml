@@ -6,16 +6,9 @@
 		SetCurrentTab('issues');
 	</script>
 }
-<h2>
-	Details</h2>
+@Html.Partial("_PageTitle", "Issue details:");
 <fieldset>
-	<legend>Issue</legend>
-	<div class="display-label">
-		@Html.LabelFor(model => model.Title)</div>
-	<div class="display-field">
-		@Html.DisplayFor(model => model.Title)
-	</div>
-	<br />
+	<legend>@Html.DisplayFor(model => model.Title)</legend>
 	<div class="display-label">
 		@Html.LabelFor(model => model.Description)</div>
 	<div class="display-field">
