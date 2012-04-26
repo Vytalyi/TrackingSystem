@@ -215,3 +215,8 @@ textarea
 {
 	display: none;
 }
+
+.Actions
+{
+	min-width: 100px;
+}
