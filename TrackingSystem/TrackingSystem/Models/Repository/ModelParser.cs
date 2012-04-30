@@ -8,7 +8,7 @@ namespace TrackingSystem.Models.Repository
     public static class ModelParser
     {
         public static Issue ParseIssue(int id, string title, string description, int statusId, string statusName,
-            DateTime created, int assignedId, string assignedFname, string assignedLname, DateTime assignedRegistered)
+            DateTime created, int assignedId, string assignedFname, string assignedLname, DateTime assignedRegistered, string assignedPassword, string assignLogin)
         {
             Issue issue = new Issue();
             issue.Id = id;
@@ -16,18 +16,20 @@ namespace TrackingSystem.Models.Repository
             issue.Description = description;
             issue.Status = ParseStatus(statusId, statusName);
             issue.Created = created;
-            issue.AssignedTo = ParseUser(assignedId, assignedFname, assignedLname, assignedRegistered);
+			issue.AssignedTo = ParseUser(assignedId, assignedFname, assignedLname, assignedRegistered, assignedPassword, assignLogin);
 
             return issue;
         }
 
-        public static User ParseUser(int id, string fName, string lName, DateTime registered)
+        public static User ParseUser(int id, string fName, string lName, DateTime registered, string password, string login)
         {
             User user = new User();
             user.Id = id;
             user.Fname = fName;
             user.Lname = lName;
             user.Registered = registered;
+			user.Password = password;
+			user.Login = login;
 
             return user;
         }
@@ -41,7 +43,8 @@ namespace TrackingSystem.Models.Repository
             return status;
         }
 
-		public static Comment ParseComment(int id, string message, DateTime created, int issueId, int addedById, int addedId, string addedFName, string addedLName, DateTime addedRegistered)
+		public static Comment ParseComment(int id, string message, DateTime created, int issueId, int addedById, int addedId, string addedFName, string addedLName,
+			DateTime addedRegistered, string addedPassword, string addedLogin)
 		{
 			Comment comment = new Comment();
 			comment.Id = id;
@@ -49,7 +52,7 @@ namespace TrackingSystem.Models.Repository
 			comment.Created = created;
 			comment.Issue_Id = issueId;
 
-			comment.AddedBy = ParseUser(addedId, addedFName, addedLName, addedRegistered);
+			comment.AddedBy = ParseUser(addedId, addedFName, addedLName, addedRegistered, addedPassword, addedLogin);
 
 			return comment;
 		}

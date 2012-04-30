@@ -24,5 +24,9 @@ namespace TrackingSystem.Models
                 return string.Format("{0} {1}", Fname, Lname);
             }
         }
+
+		public string Password { get; set; }
+
+		public string Login { get; set; }
     }
 }

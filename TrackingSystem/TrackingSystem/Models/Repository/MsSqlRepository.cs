@@ -23,6 +23,34 @@ namespace TrackingSystem.Models.Repository
 
         #region get
 
+		public int? GetUserId(string username, string password)
+		{
+			int? id = null;
+
+			using (SqlConnection con = new SqlConnection(ConnStr))
+			{
+				con.Open();
+
+				string txt = @"
+                    SELECT Id
+                    FROM Users
+                    WHERE Password = @Password and Login = @Login";
+				using (SqlCommand cmd = new SqlCommand(txt, con))
+				{
+					cmd.Parameters.AddWithValue("@Login", username);
+					cmd.Parameters.AddWithValue("@Password", password);
+					SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+					if (rdr.HasRows)
+					{
+						rdr.Read();
+
+						id = int.Parse(rdr[0].ToString());
+					}
+				}
+			}
+			return id;
+		}
+
         public Issue GetIssue(int id)
         {
             Issue issue = new Issue();
@@ -32,7 +60,7 @@ namespace TrackingSystem.Models.Repository
                 con.Open();
 
                 string txt = @"
-                    SELECT i.Id, i.Title, i.Description, s.Id, s.Name, i.Created, u.Id, u.Fname, u.Lname, u.Registered
+                    SELECT i.Id, i.Title, i.Description, s.Id, s.Name, i.Created, u.Id, u.Fname, u.Lname, u.Registered, u.Password, u.Login
                     FROM Issues i
                     INNER JOIN Users u on u.Id = i.Assigned_Id
                     INNER JOIN Statuses s on s.Id = i.Status_Id
@@ -44,7 +72,7 @@ namespace TrackingSystem.Models.Repository
                     rdr.Read();
 
                     issue = ModelParser.ParseIssue((int)rdr[0], (string)rdr[1], (string)rdr[2], (int)rdr[3], (string)rdr[4],
-                        DateTime.Parse(rdr[5].ToString()), (int)rdr[6], (string)rdr[7], (string)rdr[8], DateTime.Parse(rdr[9].ToString()));
+                        DateTime.Parse(rdr[5].ToString()), (int)rdr[6], (string)rdr[7], (string)rdr[8], DateTime.Parse(rdr[9].ToString()), (string)rdr[10], (string)rdr[11]);
                 }
             }
 
@@ -62,7 +90,7 @@ namespace TrackingSystem.Models.Repository
                 con.Open();
 
                 string txt = @"
-                    SELECT i.Id, i.Title, i.Description, s.Id, s.Name, i.Created, u.Id, u.Fname, u.Lname, u.Registered
+                    SELECT i.Id, i.Title, i.Description, s.Id, s.Name, i.Created, u.Id, u.Fname, u.Lname, u.Registered, u.Password, u.Login
                     FROM Issues i
                     INNER JOIN Users u on u.Id = i.Assigned_Id
                     INNER JOIN Statuses s on s.Id = i.Status_Id";
@@ -72,7 +100,7 @@ namespace TrackingSystem.Models.Repository
                     while (rdr.Read())
                     {
                         Issue issue = ModelParser.ParseIssue((int)rdr[0], (string)rdr[1], (string)rdr[2], (int)rdr[3], (string)rdr[4],
-                            DateTime.Parse(rdr[5].ToString()), (int)rdr[6], (string)rdr[7], (string)rdr[8], DateTime.Parse(rdr[9].ToString()));
+                            DateTime.Parse(rdr[5].ToString()), (int)rdr[6], (string)rdr[7], (string)rdr[8], DateTime.Parse(rdr[9].ToString()), (string)rdr[10], (string)rdr[11]);
 
                         list.Add(issue);
                     }
@@ -146,7 +174,7 @@ namespace TrackingSystem.Models.Repository
 				con.Open();
 
 				string txt = @"
-                    SELECT Id, Fname, Lname, Registered
+                    SELECT Id, Fname, Lname, Registered, Password, Login
                     FROM Users
 					WHERE Fname like 'no' and Lname like 'user'";
 				using (SqlCommand cmd = new SqlCommand(txt, con))
@@ -154,7 +182,33 @@ namespace TrackingSystem.Models.Repository
 					SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.SingleRow);
 					rdr.Read();
 
-					user = ModelParser.ParseUser((int)rdr[0], (string)rdr[1], (string)rdr[2], DateTime.Parse(rdr[3].ToString()));
+					user = ModelParser.ParseUser((int)rdr[0], (string)rdr[1], (string)rdr[2], DateTime.Parse(rdr[3].ToString()), (string)rdr[4], (string)rdr[5]);
+				}
+			}
+
+			return user;
+		}
+
+		public User GetUser(int id)
+		{
+			User user = new User();
+
+			using (SqlConnection con = new SqlConnection(ConnStr))
+			{
+				con.Open();
+
+				string txt = @"
+                    SELECT Id, Fname, Lname, Registered, Password, Login
+                    FROM Users
+					WHERE Id = @Id";
+				using (SqlCommand cmd = new SqlCommand(txt, con))
+				{
+					cmd.Parameters.AddWithValue("@Id", id);
+
+					SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+					rdr.Read();
+
+					user = ModelParser.ParseUser((int)rdr[0], (string)rdr[1], (string)rdr[2], DateTime.Parse(rdr[3].ToString()), (string)rdr[4], (string)rdr[5]);
 				}
 			}
 
@@ -170,14 +224,14 @@ namespace TrackingSystem.Models.Repository
                 con.Open();
 
                 string txt = @"
-                    SELECT Id, Fname, Lname, Registered
+                    SELECT Id, Fname, Lname, Registered, Password, Login
                     FROM Users";
                 using (SqlCommand cmd = new SqlCommand(txt, con))
                 {
                     SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                     while (rdr.Read())
                     {
-                        User user = ModelParser.ParseUser((int)rdr[0], (string)rdr[1], (string)rdr[2], DateTime.Parse(rdr[3].ToString()));
+                        User user = ModelParser.ParseUser((int)rdr[0], (string)rdr[1], (string)rdr[2], DateTime.Parse(rdr[3].ToString()), (string)rdr[4], (string)rdr[5]);
 
                         list.Add(user);
                     }
@@ -196,7 +250,7 @@ namespace TrackingSystem.Models.Repository
                 con.Open();
 
                 string txt = @"
-                    SELECT c.Id, c.Message, c.Created, c.Issue_Id, u.Id, u.Fname, u.Lname, u.Registered
+                    SELECT c.Id, c.Message, c.Created, c.Issue_Id, u.Id, u.Fname, u.Lname, u.Registered, u.Password, u.Login
                     FROM Comments c
 					INNER JOIN Users u on u.Id = c.Addedby_Id
 					WHERE Issue_Id = @issueId";
@@ -207,7 +261,8 @@ namespace TrackingSystem.Models.Repository
                     SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                     while (rdr.Read())
                     {
-                        Comment comment = ModelParser.ParseComment((int)rdr[0], (string)rdr[1], DateTime.Parse(rdr[2].ToString()), (int)rdr[3], (int)rdr[4], (int)rdr[4], (string)rdr[5], (string)rdr[6], DateTime.Parse(rdr[7].ToString()));
+                        Comment comment = ModelParser.ParseComment((int)rdr[0], (string)rdr[1], DateTime.Parse(rdr[2].ToString()), (int)rdr[3], (int)rdr[4], (int)rdr[4], (string)rdr[5], (string)rdr[6],
+							DateTime.Parse(rdr[7].ToString()), (string)rdr[8], (string)rdr[9]);
 
 						list.Add(comment);
                     }

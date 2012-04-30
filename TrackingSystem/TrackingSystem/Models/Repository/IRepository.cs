@@ -14,7 +14,9 @@ namespace TrackingSystem.Models.Repository
         void DeleteIssue(int id);
         
         IEnumerable<User> GetUsers();
+		User GetUser(int id);
 		User GetDefaultUser();
+		int? GetUserId(string username, string password);
 
         IEnumerable<Status> GetStatuses();
 		Status GetDefaultStatus();

@@ -11,7 +11,7 @@ namespace TrackingSystem.Controllers
 	public class IssuesController : BaseController
 	{
 		[HttpGet]
-		public ActionResult List(string sort)
+		public ActionResult List(string sort, int? userId)
 		{
 			IEnumerable<Issue> viewModel = null;
 
@@ -45,6 +45,9 @@ namespace TrackingSystem.Controllers
 				// replace \r\n with <br />
 				for (int i = 0; i < viewModel.Count(); i++)
 					viewModel.ElementAt(i).Description = viewModel.ElementAt(i).Description.Replace(Environment.NewLine, "<br />");
+
+				if (userId != null)
+					ViewBag.CurrentUser = repo.GetUser((int)userId);
 			}
 			catch (Exception ex)
 			{
