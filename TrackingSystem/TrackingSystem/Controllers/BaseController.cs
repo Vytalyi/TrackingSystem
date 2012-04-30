@@ -19,8 +19,11 @@ namespace TrackingSystem.Controllers
 
 		protected User GetLoggedUser()
 		{
-			// todo... must be a logged user id
-			return repo.GetDefaultUser();
+			int userId = (int)Session["loggedId"];
+
+			User user = repo.GetUser(userId);
+
+			return user;
 		}
 
 		public bool Login(string username, string password)
@@ -32,10 +35,17 @@ namespace TrackingSystem.Controllers
 			{
 				User user = repo.GetUser((int)id);
 
+				// write full name
 				if (Session["loggedFullName"] != null)
 					Session.Add("loggedFullName", user.FullName);
 				else
 					Session["loggedFullName"] = user.FullName;
+
+				// write user id
+				if (Session["loggedId"] != null)
+					Session.Add("loggedId", user.Id);
+				else
+					Session["loggedId"] = user.Id;
 
 				return true;
 			}
@@ -45,8 +55,13 @@ namespace TrackingSystem.Controllers
 
 		public void Logout()
 		{
+			// clear user full name
 			if (Session["loggedFullName"] != null)
 				Session.Remove("loggedFullName");
+
+			// clear user id
+			if (Session["loggedId"] != null)
+				Session.Remove("loggedId");
 		}
 	}
 }

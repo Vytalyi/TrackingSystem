@@ -64,7 +64,10 @@
 	}
 </fieldset>
 <p>
-	@Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn" })
-	@Html.ActionLink("Add Comment", "AddIssueComment", new { id = Model.Id }, new { @class = "btn" })
+	@if (Session["loggedId"] != null)
+	{
+		@Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn" })
+		@Html.ActionLink("Add Comment", "AddIssueComment", new { id = Model.Id }, new { @class = "btn" })
+	}
 	@Html.ActionLink("Back to List", "List", null, new { @class = "btn" })
 </p>

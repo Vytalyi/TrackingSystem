@@ -47,9 +47,12 @@
 	<li>@Html.CheckBox("Status", true)
 		<label for="Status">
 			Status</label></li>
-	<li>@Html.CheckBox("Actions", true)
-		<label for="Actions">
-			Actions</label></li>
+	@if (Session["loggedId"] != null)
+	{
+		<li>@Html.CheckBox("Actions", true)
+			<label for="Actions">
+				Actions</label></li>
+	}
 </ul>
 <div class="issue-list-wrapper">
 	<table class="issue-list">
@@ -72,12 +75,15 @@
 			<th class="Status">
 				@Html.ActionLink("Status", "List", new { sort = "status" }, null)
 			</th>
-			<th class="Actions">
-				Actions
-			</th>
+			@if (Session["loggedId"] != null)
+			{
+				<th class="Actions">
+					Actions
+				</th>
+			}
 		</tr>
 		@foreach (var item in Model)
-  {
+		{
 			<tr>
 				<td class="Id">
 					@Html.DisplayFor(modelItem => item.Id)
@@ -87,17 +93,17 @@
 				</td>
 				<td class="Description">
 					@if (item.Description.Length > 128)
-	 {
+					{
 						@Html.Raw(
 							item.Description.Substring(0, 128) + "..."
 						)
-	 }
-	 else
-	 {
+					}
+					else
+					{
 						@Html.Raw(
 							item.Description
 						)
-	 }
+					}
 				</td>
 				<td class="Created">
 					@Html.DisplayFor(modelItem => item.Created)
@@ -108,14 +114,20 @@
 				<td class="Status">
 					@Html.DisplayFor(modelItem => item.Status.Name)
 				</td>
-				<td class="Actions">
-					@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn-action" })
-					@Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn-action" })
-				</td>
+				@if (Session["loggedId"] != null)
+				{
+					<td class="Actions">
+						@Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn-action" })
+						@Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn-action" })
+					</td>
+				}
 			</tr>
   }
 	</table>
 </div>
-<p>
-	@Html.ActionLink("Create New", "Add", null, new { @class = "btn" })
-</p>
+@if (Session["loggedId"] != null)
+{
+	<p>
+		@Html.ActionLink("Create New", "Add", null, new { @class = "btn" })
+	</p>
+}
