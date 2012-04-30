@@ -10,5 +10,10 @@ namespace TrackingSystem.Controllers
     public abstract class BaseController : Controller
     {
         protected MsSqlRepository repo = new MsSqlRepository();
+
+		protected ActionResult Error(Exception ex)
+		{
+			return View("Error", ex);
+		}
     }
 }

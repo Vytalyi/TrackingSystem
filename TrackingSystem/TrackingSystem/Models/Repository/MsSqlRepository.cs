@@ -113,6 +113,54 @@ namespace TrackingSystem.Models.Repository
             return list;
         }
 
+		public Status GetDefaultStatus()
+		{
+			Status status = new Status();
+
+			using (SqlConnection con = new SqlConnection(ConnStr))
+			{
+				con.Open();
+
+				string txt = @"
+                    SELECT Id, Name
+                    FROM Statuses
+					WHERE Name like 'open'";
+				using (SqlCommand cmd = new SqlCommand(txt, con))
+				{
+					SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+					rdr.Read();
+					
+					status = ModelParser.ParseStatus((int)rdr[0], (string)rdr[1]);
+				}
+			}
+
+			return status;
+		}
+
+		public User GetDefaultUser()
+		{
+			User user = new User();
+
+			using (SqlConnection con = new SqlConnection(ConnStr))
+			{
+				con.Open();
+
+				string txt = @"
+                    SELECT Id, Fname, Lname, Registered
+                    FROM Users
+					WHERE Fname like 'no' and Lname like 'user'";
+				using (SqlCommand cmd = new SqlCommand(txt, con))
+				{
+					SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+					rdr.Read();
+
+					user = ModelParser.ParseUser((int)rdr[0], (string)rdr[1], (string)rdr[2], DateTime.Parse(rdr[3].ToString()));
+				}
+			}
+
+			return user;
+		}
+
         public IEnumerable<User> GetUsers()
         {
             List<User> list = new List<User>();
@@ -215,8 +263,8 @@ namespace TrackingSystem.Models.Repository
                 {
                     cmd.Parameters.AddWithValue("@Title", newIssue.Title);
                     cmd.Parameters.AddWithValue("@Description", newIssue.Description);
-                    cmd.Parameters.AddWithValue("@Assigned_Id", 4); // no user
-                    cmd.Parameters.AddWithValue("@Status_Id", 1); // open status
+                    cmd.Parameters.AddWithValue("@Assigned_Id", newIssue.AssignedTo.Id);
+                    cmd.Parameters.AddWithValue("@Status_Id", newIssue.Status.Id);
                     cmd.ExecuteNonQuery();
                 }
             }

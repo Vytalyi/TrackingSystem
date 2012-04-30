@@ -13,36 +13,43 @@ namespace TrackingSystem.Controllers
 		[HttpGet]
 		public ActionResult List(string sort)
 		{
-			IEnumerable<Issue> viewModel;
+			IEnumerable<Issue> viewModel = null;
 
-			switch (sort)
+			try
 			{
-				case "id":
-					viewModel = repo.GetIssues().OrderBy(r => r.Id);
-					break;
-				case "title":
-					viewModel = repo.GetIssues().OrderBy(r => r.Title);
-					break;
-				case "description":
-					viewModel = repo.GetIssues().OrderBy(r => r.Description);
-					break;
-				case "created":
-					viewModel = repo.GetIssues().OrderBy(r => r.Created);
-					break;
-				case "assigned":
-					viewModel = repo.GetIssues().OrderBy(r => r.AssignedTo.FullName);
-					break;
-				case "status":
-					viewModel = repo.GetIssues().OrderBy(r => r.Status.Name);
-					break;
-				default:
-					viewModel = repo.GetIssues();
-					break;
-			}
+				switch (sort)
+				{
+					case "id":
+						viewModel = repo.GetIssues().OrderBy(r => r.Id);
+						break;
+					case "title":
+						viewModel = repo.GetIssues().OrderBy(r => r.Title);
+						break;
+					case "description":
+						viewModel = repo.GetIssues().OrderBy(r => r.Description);
+						break;
+					case "created":
+						viewModel = repo.GetIssues().OrderBy(r => r.Created);
+						break;
+					case "assigned":
+						viewModel = repo.GetIssues().OrderBy(r => r.AssignedTo.FullName);
+						break;
+					case "status":
+						viewModel = repo.GetIssues().OrderBy(r => r.Status.Name);
+						break;
+					default:
+						viewModel = repo.GetIssues();
+						break;
+				}
 
-			// replace \r\n with <br />
-			for (int i = 0; i < viewModel.Count(); i++)
-				viewModel.ElementAt(i).Description = viewModel.ElementAt(i).Description.Replace(Environment.NewLine, "<br />");
+				// replace \r\n with <br />
+				for (int i = 0; i < viewModel.Count(); i++)
+					viewModel.ElementAt(i).Description = viewModel.ElementAt(i).Description.Replace(Environment.NewLine, "<br />");
+			}
+			catch (Exception ex)
+			{
+				return Error(ex);
+			}
 
 			return View(viewModel);
 		}
@@ -50,7 +57,16 @@ namespace TrackingSystem.Controllers
 		[HttpGet]
 		public ActionResult Edit(int id)
 		{
-			var viewModel = repo.GetIssue(id);
+			Issue viewModel = null;
+
+			try
+			{
+				viewModel = repo.GetIssue(id);
+			}
+			catch (Exception ex)
+			{
+				return Error(ex);
+			}
 
 			return View(viewModel);
 		}
@@ -58,7 +74,14 @@ namespace TrackingSystem.Controllers
 		[HttpPost]
 		public ActionResult Edit(Issue issue)
 		{
-			repo.UpdateIssue(issue);
+			try
+			{
+				repo.UpdateIssue(issue);
+			}
+			catch (Exception ex)
+			{
+				return Error(ex);
+			}
 
 			return RedirectToAction("List");
 		}
@@ -67,10 +90,18 @@ namespace TrackingSystem.Controllers
 		public ActionResult Add()
 		{
 			var viewModel = new Issue();
-			viewModel.Title = "New Issue";
-			viewModel.Description = "New Description";
-			viewModel.AssignedTo = new User();
-			viewModel.Status = new Status();
+
+			try
+			{
+				viewModel.Title = "New Issue";
+				viewModel.Description = "New Description";
+				viewModel.AssignedTo = repo.GetDefaultUser();
+				viewModel.Status = repo.GetDefaultStatus();
+			}
+			catch (Exception ex)
+			{
+				return Error(ex);
+			}
 
 			return View(viewModel);
 		}
@@ -78,21 +109,42 @@ namespace TrackingSystem.Controllers
 		[HttpPost]
 		public ActionResult Add(Issue issue)
 		{
-			repo.AddIssue(issue);
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					repo.AddIssue(issue);
 
-			return RedirectToAction("List");
+					return RedirectToAction("List");
+				}
+			}
+			catch (Exception ex)
+			{
+				return Error(ex);
+			}
+
+			return View();
 		}
 
 		[HttpGet]
 		public ActionResult Details(int id)
 		{
-			var viewModel = repo.GetIssue(id);
+			Issue viewModel = null;
 
-			// replace \r\n with <br />
-			viewModel.Description = viewModel.Description.Replace(Environment.NewLine, "<br />");
+			try
+			{
+				viewModel = repo.GetIssue(id);
 
-			for (int i = 0; i < viewModel.Comments.Count(); i++)
-				viewModel.Comments.ElementAt(i).Message = viewModel.Comments.ElementAt(i).Message.Replace(Environment.NewLine, "<br />");
+				// replace \r\n with <br />
+				viewModel.Description = viewModel.Description.Replace(Environment.NewLine, "<br />");
+
+				for (int i = 0; i < viewModel.Comments.Count(); i++)
+					viewModel.Comments.ElementAt(i).Message = viewModel.Comments.ElementAt(i).Message.Replace(Environment.NewLine, "<br />");
+			}
+			catch (Exception ex)
+			{
+				return Error(ex);
+			}
 
 			return View(viewModel);
 		}
@@ -100,7 +152,14 @@ namespace TrackingSystem.Controllers
 		[HttpGet]
 		public ActionResult Delete(int id)
 		{
-			repo.DeleteIssue(id);
+			try
+			{
+				repo.DeleteIssue(id);
+			}
+			catch (Exception ex)
+			{
+				return Error(ex);
+			}
 
 			return RedirectToAction("List");
 		}
@@ -108,8 +167,16 @@ namespace TrackingSystem.Controllers
 		[HttpGet]
 		public ActionResult AddIssueComment(int id)
 		{
-			var viewModel = new Comment();
-			viewModel.Issue_Id = id;
+			Comment viewModel = new Comment();
+
+			try
+			{
+				viewModel.Issue_Id = id;
+			}
+			catch (Exception ex)
+			{
+				return Error(ex);
+			}
 
 			return View(viewModel);
 		}
@@ -117,14 +184,33 @@ namespace TrackingSystem.Controllers
 		[HttpPost]
 		public ActionResult AddIssueComment(Comment comment)
 		{
-			repo.AddComment(comment);
+			try
+			{
+				if (ModelState.IsValid)
+				{
+					repo.AddComment(comment);
 
-			return RedirectToAction("Details", new { id = comment.Issue_Id });
+					return RedirectToAction("Details", new { id = comment.Issue_Id });
+				}
+			}
+			catch (Exception ex)
+			{
+				return Error(ex);
+			}
+
+			return View();
 		}
 
 		public ActionResult DeleteComment(int id, int issueId)
 		{
-			repo.DeleteComment(id);
+			try
+			{
+				repo.DeleteComment(id);
+			}
+			catch (Exception ex)
+			{
+				return Error(ex);
+			}
 
 			return RedirectToAction("Edit", new { id = issueId });
 		}

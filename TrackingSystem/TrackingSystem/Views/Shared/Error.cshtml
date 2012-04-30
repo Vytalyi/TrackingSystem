@@ -1,0 +1,38 @@
+﻿@model System.Exception
+@{
+	ViewBag.Title = "Error";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	<link href="../../Content/Error.css" rel="stylesheet" type="text/css" />
+}
+@Html.Partial("_PageTitle", "An error occured")
+<div>
+	<table class="ErrorDetails">
+		<tr>
+			<td>
+				Type:
+			</td>
+			<td>
+				@Model.GetType()
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Message:
+			</td>
+			<td>
+				@Model.Message
+			</td>
+		</tr>
+		<tr>
+			<td>
+				Stack Trace:
+			</td>
+			<td>
+				@Model.StackTrace.Substring(Model.StackTrace.LastIndexOf("\\") + 1)
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="logged">
+	This error was logged by our system. We give you feedback as soon as possible.
+</div>

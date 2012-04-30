@@ -1,6 +1,6 @@
 body
 {
-	font-size: .85em;
+	font-size: 15px;
 	font-family: Geneva, Arial, Helvetica, sans-serif;
 	color: #FFFFCC;
 	background: #F5FEC9 url('images/body-background.jpg') repeat-x center top;
@@ -191,12 +191,14 @@ textarea
 -----------------------------------------------------------*/
 .field-validation-error
 {
-	color: #ff0000;
+	color: #FF9900;
+	height: auto;
 }
 
 .field-validation-valid
 {
 	display: none;
+	height: 0;
 }
 
 .input-validation-error

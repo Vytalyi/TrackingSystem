@@ -14,8 +14,10 @@ namespace TrackingSystem.Models.Repository
         void DeleteIssue(int id);
         
         IEnumerable<User> GetUsers();
+		User GetDefaultUser();
 
         IEnumerable<Status> GetStatuses();
+		Status GetDefaultStatus();
 
 		IEnumerable<Comment> GetCommentsForIssue(int issueId);
 		void DeleteComment(int id);

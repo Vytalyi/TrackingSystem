@@ -81,6 +81,7 @@
     <Content Include="App_Data\TrackingDB_log.ldf">
       <DependentUpon>TrackingDB.mdf</DependentUpon>
     </Content>
+    <Content Include="Content\Error.css" />
     <Content Include="Content\images\body-background.jpg" />
     <Content Include="Content\images\logo_96.png" />
     <Content Include="Content\images\menu_bg.gif" />
@@ -169,6 +170,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\_PageTitle.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Error.cshtml" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />
