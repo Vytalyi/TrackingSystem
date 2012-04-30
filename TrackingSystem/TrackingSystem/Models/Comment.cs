@@ -18,5 +18,7 @@ namespace TrackingSystem.Models
         public DateTime Created { get; set; }
 
 		public int Issue_Id { get; set; }
+
+		public User AddedBy { get; set; }
     }
 }

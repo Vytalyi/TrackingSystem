@@ -196,8 +196,9 @@ namespace TrackingSystem.Models.Repository
                 con.Open();
 
                 string txt = @"
-                    SELECT Id, Message, Created, Issue_Id
-                    FROM Comments
+                    SELECT c.Id, c.Message, c.Created, c.Issue_Id, u.Id, u.Fname, u.Lname, u.Registered
+                    FROM Comments c
+					INNER JOIN Users u on u.Id = c.Addedby_Id
 					WHERE Issue_Id = @issueId";
                 using (SqlCommand cmd = new SqlCommand(txt, con))
                 {
@@ -206,7 +207,7 @@ namespace TrackingSystem.Models.Repository
                     SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
                     while (rdr.Read())
                     {
-                        Comment comment = ModelParser.ParseComment((int)rdr[0], (string)rdr[1], DateTime.Parse(rdr[2].ToString()), (int)rdr[3]);
+                        Comment comment = ModelParser.ParseComment((int)rdr[0], (string)rdr[1], DateTime.Parse(rdr[2].ToString()), (int)rdr[3], (int)rdr[4], (int)rdr[4], (string)rdr[5], (string)rdr[6], DateTime.Parse(rdr[7].ToString()));
 
 						list.Add(comment);
                     }
@@ -277,13 +278,14 @@ namespace TrackingSystem.Models.Repository
 				con.Open();
 
 				string txt = @"
-                    INSERT INTO Comments (Message, Issue_Id)
-                    VALUES (@Message, @Issue_Id)
+                    INSERT INTO Comments (Message, Issue_Id, Addedby_Id)
+                    VALUES (@Message, @Issue_Id, @Addedby_Id)
                 ";
 				using (SqlCommand cmd = new SqlCommand(txt, con))
 				{
 					cmd.Parameters.AddWithValue("@Message", newComment.Message);
 					cmd.Parameters.AddWithValue("@Issue_Id", newComment.Issue_Id);
+					cmd.Parameters.AddWithValue("@Addedby_Id", newComment.AddedBy.Id);
 					cmd.ExecuteNonQuery();
 				}
 			}

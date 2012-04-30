@@ -188,6 +188,8 @@ namespace TrackingSystem.Controllers
 			{
 				if (ModelState.IsValid)
 				{
+					comment.AddedBy = GetLoggedUserId();
+
 					repo.AddComment(comment);
 
 					return RedirectToAction("Details", new { id = comment.Issue_Id });
