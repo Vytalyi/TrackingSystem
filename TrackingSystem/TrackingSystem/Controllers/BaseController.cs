@@ -17,7 +17,7 @@ namespace TrackingSystem.Controllers
 			return View("Error", ex);
 		}
 
-		protected User GetLoggedUserId()
+		protected User GetLoggedUser()
 		{
 			// todo... must be a logged user id
 			return repo.GetDefaultUser();

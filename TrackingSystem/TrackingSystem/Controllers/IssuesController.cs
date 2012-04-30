@@ -188,7 +188,7 @@ namespace TrackingSystem.Controllers
 			{
 				if (ModelState.IsValid)
 				{
-					comment.AddedBy = GetLoggedUserId();
+					comment.AddedBy = GetLoggedUser();
 
 					repo.AddComment(comment);
 
