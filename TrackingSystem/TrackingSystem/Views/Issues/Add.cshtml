@@ -31,6 +31,7 @@
 	<fieldset>
 		<legend>@Html.LabelFor(model => model.AssignedTo.FullName)</legend>
 		@Html.HiddenFor(model => model.Id)
+		@Html.HiddenFor(model => model.CreatedBy.Id)
 		<div class="editor-field">
 			@Html.Raw(
 				Html.DropDownListFor(model => model.AssignedTo.Id, repo.GetUsers().Select(r =>

@@ -37,6 +37,9 @@ namespace TrackingSystem.Controllers
 					case "status":
 						viewModel = repo.GetIssues().OrderBy(r => r.Status.Name);
 						break;
+					case "createdBy":
+						viewModel = repo.GetIssues().OrderBy(r => r.CreatedBy.FullName);
+						break;
 					default:
 						viewModel = repo.GetIssues();
 						break;
@@ -79,6 +82,7 @@ namespace TrackingSystem.Controllers
 		{
 			try
 			{
+				issue.LastModified = DateTime.Now;
 				repo.UpdateIssue(issue);
 			}
 			catch (Exception ex)
@@ -100,6 +104,9 @@ namespace TrackingSystem.Controllers
 				viewModel.Description = "New Description";
 				viewModel.AssignedTo = repo.GetDefaultUser();
 				viewModel.Status = repo.GetDefaultStatus();
+				viewModel.CreatedBy = GetLoggedUser();
+				viewModel.Priority = 1;
+				viewModel.LastModified = DateTime.Now;
 			}
 			catch (Exception ex)
 			{

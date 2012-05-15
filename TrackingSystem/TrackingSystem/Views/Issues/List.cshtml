@@ -1,5 +1,6 @@
 ﻿@model IEnumerable<TrackingSystem.Models.Issue>
 @{
+	int counter = 0;
 	ViewBag.Title = "List";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	<link href="../../Content/Issues/List.css" rel="stylesheet" type="text/css" />
@@ -29,6 +30,9 @@
 @Html.Partial("_PageTitle", "Issue list:")
 <input type="button" id="ShowHideFilterBtn" value="Column Filter" class="btn" />
 <ul class="filter-list">
+	<li>@Html.CheckBox("RowNumber", true)
+		<label for="RowNumber">
+			№</label></li>
 	<li>@Html.CheckBox("Id", true)
 		<label for="Id">
 			Id</label></li>
@@ -47,6 +51,12 @@
 	<li>@Html.CheckBox("Status", true)
 		<label for="Status">
 			Status</label></li>
+	<li>@Html.CheckBox("CreatedBy", true)
+		<label for="CreatedBy">
+			Created by</label></li>
+	<li>@Html.CheckBox("Last modified", true)
+		<label for="LastModified">
+			Last modified</label></li>
 	@if (Session["loggedId"] != null)
 	{
 		<li>@Html.CheckBox("Actions", true)
@@ -57,6 +67,9 @@
 <div class="issue-list-wrapper">
 	<table class="issue-list">
 		<tr>
+			<th class="RowNumber">
+				@Html.ActionLink("№", "List", new { sort = "number" }, null)
+			</th>
 			<th class="Id">
 				@Html.ActionLink("Id", "List", new { sort = "id" }, null)
 			</th>
@@ -75,6 +88,12 @@
 			<th class="Status">
 				@Html.ActionLink("Status", "List", new { sort = "status" }, null)
 			</th>
+			<th class="CreatedBy">
+				@Html.ActionLink("Created by", "List", new { sort = "createdBy" }, null)
+			</th>
+			<th class="CreatedBy">
+				@Html.ActionLink("Last modified", "List", new { sort = "lastModified" }, null)
+			</th>
 			@if (Session["loggedId"] != null)
 			{
 				<th class="Actions">
@@ -84,7 +103,11 @@
 		</tr>
 		@foreach (var item in Model)
 		{
+			counter++;
 			<tr>
+				<td class="RowNumber">
+					@counter.ToString()
+				</td>
 				<td class="Id">
 					@Html.DisplayFor(modelItem => item.Id)
 				</td>
@@ -113,6 +136,12 @@
 				</td>
 				<td class="Status">
 					@Html.DisplayFor(modelItem => item.Status.Name)
+				</td>
+				<td class="CreatedBy">
+					@Html.DisplayFor(modelItem => item.CreatedBy.FullName)
+				</td>
+				<td class="LastModified">
+					@Html.DisplayFor(modelItem => item.LastModified)
 				</td>
 				@if (Session["loggedId"] != null)
 				{

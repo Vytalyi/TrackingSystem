@@ -7,8 +7,10 @@ namespace TrackingSystem.Models.Repository
 {
     public static class ModelParser
     {
-        public static Issue ParseIssue(int id, string title, string description, int statusId, string statusName,
-            DateTime created, int assignedId, string assignedFname, string assignedLname, DateTime assignedRegistered, string assignedPassword, string assignLogin)
+        public static Issue ParseIssue(int id, string title, string description, int statusId, string statusName, DateTime created,
+			int assignedId, string assignedFname, string assignedLname, DateTime assignedRegistered, string assignedPassword, string assignLogin,
+			int createdId, string createdFname, string createdLname, DateTime createdRegistered, string createdPassword, string createdLogin,
+			DateTime lastModified)
         {
             Issue issue = new Issue();
             issue.Id = id;
@@ -17,6 +19,8 @@ namespace TrackingSystem.Models.Repository
             issue.Status = ParseStatus(statusId, statusName);
             issue.Created = created;
 			issue.AssignedTo = ParseUser(assignedId, assignedFname, assignedLname, assignedRegistered, assignedPassword, assignLogin);
+			issue.CreatedBy = ParseUser(createdId, createdFname, createdLname, createdRegistered, createdPassword, createdLogin);
+			issue.LastModified = lastModified;
 
             return issue;
         }

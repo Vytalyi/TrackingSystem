@@ -21,10 +21,17 @@ namespace TrackingSystem.Models
 
         public User AssignedTo { get; set; }
 
+		public User CreatedBy { get; set; }
+
         public Status Status { get; set; }
 
         public DateTime Created { get; set; }
 
 		public IEnumerable<Comment> Comments { get; set; }
+
+		[DisplayName("Last modified")]
+		public DateTime LastModified { get; set; }
+
+		public int Priority { get; set; }
     }
 }

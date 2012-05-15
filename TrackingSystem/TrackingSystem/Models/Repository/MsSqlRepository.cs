@@ -60,9 +60,14 @@ namespace TrackingSystem.Models.Repository
                 con.Open();
 
                 string txt = @"
-                    SELECT i.Id, i.Title, i.Description, s.Id, s.Name, i.Created, u.Id, u.Fname, u.Lname, u.Registered, u.Password, u.Login
+                    SELECT
+						i.Id, i.Title, i.Description, s.Id, s.Name, i.Created,
+						u.Id, u.Fname, u.Lname, u.Registered, u.Password, u.Login,
+						u2.Id, u2.Fname, u2.Lname, u2.Registered, u2.Password, u2.Login,
+						i.Modified
                     FROM Issues i
                     INNER JOIN Users u on u.Id = i.Assigned_Id
+					INNER JOIN Users u2 on u2.Id = i.Createdby_Id
                     INNER JOIN Statuses s on s.Id = i.Status_Id
                     WHERE i.Id = @Id";
                 using (SqlCommand cmd = new SqlCommand(txt, con))
@@ -72,7 +77,8 @@ namespace TrackingSystem.Models.Repository
                     rdr.Read();
 
                     issue = ModelParser.ParseIssue((int)rdr[0], (string)rdr[1], (string)rdr[2], (int)rdr[3], (string)rdr[4],
-                        DateTime.Parse(rdr[5].ToString()), (int)rdr[6], (string)rdr[7], (string)rdr[8], DateTime.Parse(rdr[9].ToString()), (string)rdr[10], (string)rdr[11]);
+                        DateTime.Parse(rdr[5].ToString()), (int)rdr[6], (string)rdr[7], (string)rdr[8], DateTime.Parse(rdr[9].ToString()), (string)rdr[10], (string)rdr[11],
+						(int)rdr[12], (string)rdr[13], (string)rdr[14], DateTime.Parse(rdr[15].ToString()), (string)rdr[16], (string)rdr[17], DateTime.Parse(rdr[18].ToString()));
                 }
             }
 
@@ -90,9 +96,14 @@ namespace TrackingSystem.Models.Repository
                 con.Open();
 
                 string txt = @"
-                    SELECT i.Id, i.Title, i.Description, s.Id, s.Name, i.Created, u.Id, u.Fname, u.Lname, u.Registered, u.Password, u.Login
+                    SELECT
+						i.Id, i.Title, i.Description, s.Id, s.Name, i.Created,
+						u.Id, u.Fname, u.Lname, u.Registered, u.Password, u.Login,
+						u2.Id, u2.Fname, u2.Lname, u2.Registered, u2.Password, u2.Login,
+						i.Modified
                     FROM Issues i
                     INNER JOIN Users u on u.Id = i.Assigned_Id
+					INNER JOIN Users u2 on u2.Id = i.Createdby_Id
                     INNER JOIN Statuses s on s.Id = i.Status_Id";
                 using (SqlCommand cmd = new SqlCommand(txt, con))
                 {
@@ -100,7 +111,8 @@ namespace TrackingSystem.Models.Repository
                     while (rdr.Read())
                     {
                         Issue issue = ModelParser.ParseIssue((int)rdr[0], (string)rdr[1], (string)rdr[2], (int)rdr[3], (string)rdr[4],
-                            DateTime.Parse(rdr[5].ToString()), (int)rdr[6], (string)rdr[7], (string)rdr[8], DateTime.Parse(rdr[9].ToString()), (string)rdr[10], (string)rdr[11]);
+                            DateTime.Parse(rdr[5].ToString()), (int)rdr[6], (string)rdr[7], (string)rdr[8], DateTime.Parse(rdr[9].ToString()), (string)rdr[10], (string)rdr[11],
+							(int)rdr[12], (string)rdr[13], (string)rdr[14], DateTime.Parse(rdr[15].ToString()), (string)rdr[16], (string)rdr[17], DateTime.Parse(rdr[18].ToString()));
 
                         list.Add(issue);
                     }
@@ -287,7 +299,8 @@ namespace TrackingSystem.Models.Repository
                     SET Title = @Title,
                         Description = @Description,
                         Assigned_Id = @Assigned_Id,
-                        Status_Id = @Status_Id
+                        Status_Id = @Status_Id,
+						Modified = getdate()
                     WHERE Id = @Id";
                 using (SqlCommand cmd = new SqlCommand(txt, con))
                 {
@@ -312,8 +325,8 @@ namespace TrackingSystem.Models.Repository
                 con.Open();
 
                 string txt = @"
-                    INSERT INTO Issues (Title, Description, Assigned_Id, Status_Id)
-                    VALUES (@Title, @Description, @Assigned_Id, @Status_Id)
+                    INSERT INTO Issues (Title, Description, Assigned_Id, Status_Id, CreatedBy_Id, Priority_Id)
+                    VALUES (@Title, @Description, @Assigned_Id, @Status_Id, @CreatedBy_Id, @Priority_Id)
                 ";
                 using (SqlCommand cmd = new SqlCommand(txt, con))
                 {
@@ -321,6 +334,8 @@ namespace TrackingSystem.Models.Repository
                     cmd.Parameters.AddWithValue("@Description", newIssue.Description);
                     cmd.Parameters.AddWithValue("@Assigned_Id", newIssue.AssignedTo.Id);
                     cmd.Parameters.AddWithValue("@Status_Id", newIssue.Status.Id);
+					cmd.Parameters.AddWithValue("@CreatedBy_Id", newIssue.CreatedBy.Id);
+					cmd.Parameters.AddWithValue("@Priority_Id", newIssue.Priority);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -335,6 +350,10 @@ namespace TrackingSystem.Models.Repository
 				string txt = @"
                     INSERT INTO Comments (Message, Issue_Id, Addedby_Id)
                     VALUES (@Message, @Issue_Id, @Addedby_Id)
+
+					UPDATE Issues
+					SET Modified = getdate()
+					WHERE id = @Issue_Id
                 ";
 				using (SqlCommand cmd = new SqlCommand(txt, con))
 				{

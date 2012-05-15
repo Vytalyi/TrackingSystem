@@ -54,3 +54,41 @@
 {
     background-color: #003399;
 }
+
+.Actions
+{
+	min-width: 100px;
+	max-width: 120px;
+}
+
+.CreatedBy, .Assigned, .Status
+{
+	min-width: 50px;
+	max-width: 70px;
+	text-align: center;
+}
+
+.Created, .LastModified
+{
+	min-width: 70px;
+	max-width: 80px;
+	text-align: center;
+}
+
+.Description
+{
+	min-width: 100px;
+	max-width: 400px;
+}
+
+.Id
+{
+	text-align: center;
+}
+
+.RowNumber
+{
+    text-align: center;
+    min-width: 7px;
+    max-width: 10px;
+}
