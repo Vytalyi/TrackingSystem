@@ -115,10 +115,10 @@
 					@counter.ToString()
 				</td>
 				<td class="Id">
-					@Html.DisplayFor(modelItem => item.Id)
+					<a href='@Url.Action("Details", new { id = item.Id })'>@Html.DisplayFor(modelItem => item.Id)</a>
 				</td>
 				<td class="Title">
-					<a href='@Url.Action("Details", new { id = item.Id })'>@Html.DisplayFor(modelItem => item.Title)</a>
+					@Html.DisplayFor(modelItem => item.Title)
 				</td>
 				<td class="Description">
 					@if (item.Description.Length > 128)
