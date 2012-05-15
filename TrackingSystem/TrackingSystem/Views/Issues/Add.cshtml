@@ -14,6 +14,10 @@
 @using (Html.BeginForm())
 {
 	@Html.ValidationSummary(true)
+
+	@Html.HiddenFor(model => model.Id)
+	@Html.HiddenFor(model => model.CreatedBy.Id)
+	
 	<fieldset>
 		<legend>@Html.LabelFor(model => model.Title)</legend>
 		<div class="editor-field">
@@ -30,8 +34,6 @@
 	</fieldset>
 	<fieldset>
 		<legend>@Html.LabelFor(model => model.AssignedTo.FullName)</legend>
-		@Html.HiddenFor(model => model.Id)
-		@Html.HiddenFor(model => model.CreatedBy.Id)
 		<div class="editor-field">
 			@Html.Raw(
 				Html.DropDownListFor(model => model.AssignedTo.Id, repo.GetUsers().Select(r =>
@@ -43,10 +45,20 @@
 	</fieldset>
 	<fieldset>
 		<legend>@Html.LabelFor(model => model.Status.Name)</legend>
-		@Html.HiddenFor(model => model.Id)
 		<div class="editor-field">
 			@Html.Raw(
 				Html.DropDownListFor(model => model.Status.Id, repo.GetStatuses().Select(r =>
+				{
+					return new SelectListItem() { Text = r.Name, Value = r.Id.ToString() };
+				})).ToHtmlString()
+			)
+		</div>
+	</fieldset>
+	<fieldset>
+		<legend>@Html.LabelFor(model => model.Priority.Name)</legend>
+		<div class="editor-field">
+			@Html.Raw(
+				Html.DropDownListFor(model => model.Priority.Id, repo.GetPriorities().Select(r =>
 				{
 					return new SelectListItem() { Text = r.Name, Value = r.Id.ToString() };
 				})).ToHtmlString()

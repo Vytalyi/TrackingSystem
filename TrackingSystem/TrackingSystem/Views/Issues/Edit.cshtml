@@ -14,9 +14,11 @@
 @using (Html.BeginForm())
 {
 	@Html.ValidationSummary(true)
+	
+	@Html.HiddenFor(model => model.Id)
 	<fieldset>
 		<legend>@Html.LabelFor(model => model.Title)</legend>
-		@Html.HiddenFor(model => model.Id)
+		
 		<div class="editor-field">
 			@Html.EditorFor(model => model.Title)
 			@Html.ValidationMessageFor(model => model.Title)
@@ -24,7 +26,6 @@
 	</fieldset>
 	<fieldset>
 		<legend>@Html.LabelFor(model => model.Description)</legend>
-		@Html.HiddenFor(model => model.Id)
 		<div class="editor-field">
 			@Html.TextAreaFor(model => model.Description, new { cols = 70, rows = 10 })
 			@Html.ValidationMessageFor(model => model.Description)
@@ -32,7 +33,6 @@
 	</fieldset>
 	<fieldset>
 		<legend>@Html.LabelFor(model => model.AssignedTo.FullName)</legend>
-		@Html.HiddenFor(model => model.Id)
 		<div class="editor-field">
 			@Html.Raw(
 				Html.DropDownListFor(model => model.AssignedTo.Id, repo.GetUsers().Select(r =>
@@ -44,7 +44,6 @@
 	</fieldset>
 	<fieldset>
 		<legend>@Html.LabelFor(model => model.Status.Name)</legend>
-		@Html.HiddenFor(model => model.Id)
 		<div class="editor-field">
 			@Html.Raw(
 				Html.DropDownListFor(model => model.Status.Id, repo.GetStatuses().Select(r =>
@@ -55,25 +54,35 @@
 		</div>
 	</fieldset>
 	<fieldset>
+		<legend>@Html.LabelFor(model => model.Priority.Name)</legend>
+		<div class="editor-field">
+			@Html.Raw(
+				Html.DropDownListFor(model => model.Priority.Id, repo.GetPriorities().Select(r =>
+				{
+					return new SelectListItem() { Text = r.Name, Value = r.Id.ToString() };
+				})).ToHtmlString()
+			)
+		</div>
+	</fieldset>
+	<fieldset>
 		<legend>Comments</legend>
-		@Html.HiddenFor(model => model.Id)
 		<div class="editor-field">
 			@if (Model.Comments.Count() > 0)
-			{
-				foreach (TrackingSystem.Models.Comment comment in Model.Comments)
-				{
+   {
+	   foreach (TrackingSystem.Models.Comment comment in Model.Comments)
+	   {
 					<div class="display-field">
 						@Html.DisplayFor(model => comment.AddedBy.FullName) on @Html.DisplayFor(model => comment.Created) : @Html.DisplayFor(model => comment.Message)
 						(@Html.ActionLink("delete", "DeleteComment", new { id = comment.Id, issueId = comment.Issue_Id }))
 					</div>
-				}
-			}
-			else
-			{
+	   }
+   }
+   else
+   {
 				<div class="display-field">
 					No comments yet
 				</div>
-			}
+   }
 		</div>
 	</fieldset>
 	<div>

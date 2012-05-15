@@ -61,7 +61,7 @@
 	max-width: 120px;
 }
 
-.CreatedBy, .Assigned, .Status
+.CreatedBy, .Assigned, .Status, .Priority
 {
 	min-width: 50px;
 	max-width: 70px;

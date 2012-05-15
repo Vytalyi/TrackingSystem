@@ -23,5 +23,7 @@ namespace TrackingSystem.Models.Repository
 
 		IEnumerable<Comment> GetCommentsForIssue(int issueId);
 		void DeleteComment(int id);
+
+		IEnumerable<Priority> GetPriorities();
     }
 }

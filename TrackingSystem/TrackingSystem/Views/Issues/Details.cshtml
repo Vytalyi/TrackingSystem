@@ -35,6 +35,11 @@
 	@Html.DisplayFor(model => model.Status.Name)
 </fieldset>
 <fieldset>
+	<legend>@Html.LabelFor(model => model.Priority.Name)</legend>
+	<div class="display-field">
+	@Html.DisplayFor(model => model.Priority.Name)
+</fieldset>
+<fieldset>
 	<legend>@Html.LabelFor(model => model.LastModified)</legend>
 	<div class="display-field">
 	@Html.DisplayFor(model => model.LastModified)

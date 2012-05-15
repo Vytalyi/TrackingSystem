@@ -54,9 +54,12 @@
 	<li>@Html.CheckBox("CreatedBy", true)
 		<label for="CreatedBy">
 			Created by</label></li>
-	<li>@Html.CheckBox("Last modified", true)
+	<li>@Html.CheckBox("LastModified", true)
 		<label for="LastModified">
 			Last modified</label></li>
+	<li>@Html.CheckBox("Priority", true)
+		<label for="Priority">
+			Priority</label></li>
 	@if (Session["loggedId"] != null)
 	{
 		<li>@Html.CheckBox("Actions", true)
@@ -91,8 +94,11 @@
 			<th class="CreatedBy">
 				@Html.ActionLink("Created by", "List", new { sort = "createdBy" }, null)
 			</th>
-			<th class="CreatedBy">
+			<th class="LastModified">
 				@Html.ActionLink("Last modified", "List", new { sort = "lastModified" }, null)
+			</th>
+			<th class="Priority">
+				@Html.ActionLink("Priority", "List", new { sort = "priority" }, null)
 			</th>
 			@if (Session["loggedId"] != null)
 			{
@@ -142,6 +148,9 @@
 				</td>
 				<td class="LastModified">
 					@Html.DisplayFor(modelItem => item.LastModified)
+				</td>
+				<td class="Priority">
+					@Html.DisplayFor(modelItem => item.Priority.Name)
 				</td>
 				@if (Session["loggedId"] != null)
 				{

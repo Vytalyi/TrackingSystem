@@ -64,11 +64,12 @@ namespace TrackingSystem.Models.Repository
 						i.Id, i.Title, i.Description, s.Id, s.Name, i.Created,
 						u.Id, u.Fname, u.Lname, u.Registered, u.Password, u.Login,
 						u2.Id, u2.Fname, u2.Lname, u2.Registered, u2.Password, u2.Login,
-						i.Modified
+						i.Modified, p.Id, p.Name
                     FROM Issues i
                     INNER JOIN Users u on u.Id = i.Assigned_Id
 					INNER JOIN Users u2 on u2.Id = i.Createdby_Id
                     INNER JOIN Statuses s on s.Id = i.Status_Id
+					INNER JOIN Priorities p on i.Priority_Id = p.Id
                     WHERE i.Id = @Id";
                 using (SqlCommand cmd = new SqlCommand(txt, con))
                 {
@@ -78,7 +79,8 @@ namespace TrackingSystem.Models.Repository
 
                     issue = ModelParser.ParseIssue((int)rdr[0], (string)rdr[1], (string)rdr[2], (int)rdr[3], (string)rdr[4],
                         DateTime.Parse(rdr[5].ToString()), (int)rdr[6], (string)rdr[7], (string)rdr[8], DateTime.Parse(rdr[9].ToString()), (string)rdr[10], (string)rdr[11],
-						(int)rdr[12], (string)rdr[13], (string)rdr[14], DateTime.Parse(rdr[15].ToString()), (string)rdr[16], (string)rdr[17], DateTime.Parse(rdr[18].ToString()));
+						(int)rdr[12], (string)rdr[13], (string)rdr[14], DateTime.Parse(rdr[15].ToString()), (string)rdr[16], (string)rdr[17], DateTime.Parse(rdr[18].ToString()),
+						(int)rdr[19], (string)rdr[20]);
                 }
             }
 
@@ -100,10 +102,11 @@ namespace TrackingSystem.Models.Repository
 						i.Id, i.Title, i.Description, s.Id, s.Name, i.Created,
 						u.Id, u.Fname, u.Lname, u.Registered, u.Password, u.Login,
 						u2.Id, u2.Fname, u2.Lname, u2.Registered, u2.Password, u2.Login,
-						i.Modified
+						i.Modified, p.Id, p.Name
                     FROM Issues i
                     INNER JOIN Users u on u.Id = i.Assigned_Id
 					INNER JOIN Users u2 on u2.Id = i.Createdby_Id
+					INNER JOIN Priorities p on i.Priority_Id = p.Id
                     INNER JOIN Statuses s on s.Id = i.Status_Id";
                 using (SqlCommand cmd = new SqlCommand(txt, con))
                 {
@@ -112,7 +115,8 @@ namespace TrackingSystem.Models.Repository
                     {
                         Issue issue = ModelParser.ParseIssue((int)rdr[0], (string)rdr[1], (string)rdr[2], (int)rdr[3], (string)rdr[4],
                             DateTime.Parse(rdr[5].ToString()), (int)rdr[6], (string)rdr[7], (string)rdr[8], DateTime.Parse(rdr[9].ToString()), (string)rdr[10], (string)rdr[11],
-							(int)rdr[12], (string)rdr[13], (string)rdr[14], DateTime.Parse(rdr[15].ToString()), (string)rdr[16], (string)rdr[17], DateTime.Parse(rdr[18].ToString()));
+							(int)rdr[12], (string)rdr[13], (string)rdr[14], DateTime.Parse(rdr[15].ToString()), (string)rdr[16], (string)rdr[17], DateTime.Parse(rdr[18].ToString()),
+							(int)rdr[19], (string)rdr[20]);
 
                         list.Add(issue);
                     }
@@ -175,6 +179,30 @@ namespace TrackingSystem.Models.Repository
 			}
 
 			return status;
+		}
+
+		public Priority GetDefaultPriority()
+		{
+			Priority priority = new Priority();
+
+			using (SqlConnection con = new SqlConnection(ConnStr))
+			{
+				con.Open();
+
+				string txt = @"
+                    SELECT Id, Name
+                    FROM Priorities
+					WHERE Name like 'Low'";
+				using (SqlCommand cmd = new SqlCommand(txt, con))
+				{
+					SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.SingleRow);
+					rdr.Read();
+
+					priority = ModelParser.ParsePriority((int)rdr[0], (string)rdr[1]);
+				}
+			}
+
+			return priority;
 		}
 
 		public User GetDefaultUser()
@@ -284,6 +312,32 @@ namespace TrackingSystem.Models.Repository
             return list;
 		}
 
+		public IEnumerable<Priority> GetPriorities()
+		{
+			List<Priority> list = new List<Priority>();
+
+			using (SqlConnection con = new SqlConnection(ConnStr))
+			{
+				con.Open();
+
+				string txt = @"
+                    SELECT Id, Name
+                    FROM Priorities";
+				using (SqlCommand cmd = new SqlCommand(txt, con))
+				{
+					SqlDataReader rdr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+					while (rdr.Read())
+					{
+						Priority priority = ModelParser.ParsePriority((int)rdr[0], (string)rdr[1]);
+
+						list.Add(priority);
+					}
+				}
+			}
+
+			return list;
+		}
+
         #endregion
 
         #region update
@@ -300,7 +354,8 @@ namespace TrackingSystem.Models.Repository
                         Description = @Description,
                         Assigned_Id = @Assigned_Id,
                         Status_Id = @Status_Id,
-						Modified = getdate()
+						Modified = getdate(),
+						Priority_Id = @Priority_Id
                     WHERE Id = @Id";
                 using (SqlCommand cmd = new SqlCommand(txt, con))
                 {
@@ -309,6 +364,7 @@ namespace TrackingSystem.Models.Repository
                     cmd.Parameters.AddWithValue("@Assigned_Id", newIssue.AssignedTo.Id);
                     cmd.Parameters.AddWithValue("@Status_Id", newIssue.Status.Id);
                     cmd.Parameters.AddWithValue("@Id", newIssue.Id);
+					cmd.Parameters.AddWithValue("@Priority_Id", newIssue.Priority.Id);
                     cmd.ExecuteNonQuery();
                 }
             }
@@ -335,7 +391,7 @@ namespace TrackingSystem.Models.Repository
                     cmd.Parameters.AddWithValue("@Assigned_Id", newIssue.AssignedTo.Id);
                     cmd.Parameters.AddWithValue("@Status_Id", newIssue.Status.Id);
 					cmd.Parameters.AddWithValue("@CreatedBy_Id", newIssue.CreatedBy.Id);
-					cmd.Parameters.AddWithValue("@Priority_Id", newIssue.Priority);
+					cmd.Parameters.AddWithValue("@Priority_Id", newIssue.Priority.Id);
                     cmd.ExecuteNonQuery();
                 }
             }

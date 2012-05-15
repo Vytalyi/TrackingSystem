@@ -40,6 +40,12 @@ namespace TrackingSystem.Controllers
 					case "createdBy":
 						viewModel = repo.GetIssues().OrderBy(r => r.CreatedBy.FullName);
 						break;
+					case "lastModified":
+						viewModel = repo.GetIssues().OrderBy(r => r.LastModified);
+						break;
+					case "priority":
+						viewModel = repo.GetIssues().OrderBy(r => r.Priority.Name);
+						break;
 					default:
 						viewModel = repo.GetIssues();
 						break;
@@ -105,7 +111,7 @@ namespace TrackingSystem.Controllers
 				viewModel.AssignedTo = repo.GetDefaultUser();
 				viewModel.Status = repo.GetDefaultStatus();
 				viewModel.CreatedBy = GetLoggedUser();
-				viewModel.Priority = 1;
+				viewModel.Priority = repo.GetDefaultPriority();
 				viewModel.LastModified = DateTime.Now;
 			}
 			catch (Exception ex)

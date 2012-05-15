@@ -32,6 +32,6 @@ namespace TrackingSystem.Models
 		[DisplayName("Last modified")]
 		public DateTime LastModified { get; set; }
 
-		public int Priority { get; set; }
+		public Priority Priority { get; set; }
     }
 }

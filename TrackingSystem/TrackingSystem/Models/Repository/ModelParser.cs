@@ -10,7 +10,7 @@ namespace TrackingSystem.Models.Repository
         public static Issue ParseIssue(int id, string title, string description, int statusId, string statusName, DateTime created,
 			int assignedId, string assignedFname, string assignedLname, DateTime assignedRegistered, string assignedPassword, string assignLogin,
 			int createdId, string createdFname, string createdLname, DateTime createdRegistered, string createdPassword, string createdLogin,
-			DateTime lastModified)
+			DateTime lastModified, int priorityId, string priorityName)
         {
             Issue issue = new Issue();
             issue.Id = id;
@@ -21,6 +21,7 @@ namespace TrackingSystem.Models.Repository
 			issue.AssignedTo = ParseUser(assignedId, assignedFname, assignedLname, assignedRegistered, assignedPassword, assignLogin);
 			issue.CreatedBy = ParseUser(createdId, createdFname, createdLname, createdRegistered, createdPassword, createdLogin);
 			issue.LastModified = lastModified;
+			issue.Priority = ParsePriority(priorityId, priorityName);
 
             return issue;
         }
@@ -59,6 +60,15 @@ namespace TrackingSystem.Models.Repository
 			comment.AddedBy = ParseUser(addedId, addedFName, addedLName, addedRegistered, addedPassword, addedLogin);
 
 			return comment;
+		}
+
+		public static Priority ParsePriority(int id, string name)
+		{
+			Priority priority = new Priority();
+			priority.Id = id;
+			priority.Name = name;
+
+			return priority;
 		}
     }
 }
