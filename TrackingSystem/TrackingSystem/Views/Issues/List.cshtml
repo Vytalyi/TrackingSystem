@@ -14,11 +14,35 @@
 
 @Html.Partial("_PageTitle", "Issue list:")
 
-@Html.Partial("_IssueListFilters")
-
 <div class="grouping-wrapper">
-	@Html.ActionLink("Group by assigned", "List", new { group = "assign" }, new { @class = "btn" })
+	Group by:
+	@if (ViewBag.GroupPriority == null && ViewBag.GroupAssign == null)
+	{
+		@Html.ActionLink("None", "List", new { group = "none" }, new { @class = "btn-active" })
+	}
+	else
+	{
+		@Html.ActionLink("None", "List", new { group = "none" }, new { @class = "btn" })
+	}
+	@if (ViewBag.GroupAssign == true)
+	{
+		@Html.ActionLink("Assigned", "List", new { group = "assign" }, new { @class = "btn-active" })
+	}
+	else
+	{
+		@Html.ActionLink("Assigned", "List", new { group = "assign" }, new { @class = "btn" })
+	}
+	@if (ViewBag.GroupPriority == true)
+	{
+		@Html.ActionLink("Priority", "List", new { group = "priority" }, new { @class = "btn-active" })
+	}
+	else
+	{
+		@Html.ActionLink("Priority", "List", new { group = "priority" }, new { @class = "btn" })
+	}
 </div>
+
+@Html.Partial("_IssueListFilters")
 
 @if (ViewBag.GroupAssign == true)
 {
@@ -29,6 +53,20 @@
 	{
 		<div class="groupHeader">
 			 Assigned to <b>@key.Key:</b>
+		</div>
+		
+		@Html.Partial("_IssueListTable", key)
+	}
+}
+else if (ViewBag.GroupPriority == true)
+{
+	var keys = from issue in Model
+			   group issue by issue.Priority.Name into grpKey
+			   select grpKey;
+	foreach (var key in keys)
+	{
+		<div class="groupHeader">
+			 <b>@key.Key</b> priority:
 		</div>
 		
 		@Html.Partial("_IssueListTable", key)

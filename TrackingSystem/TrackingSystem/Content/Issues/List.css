@@ -24,6 +24,7 @@
 .issue-list
 {
 	border-spacing: 0;
+	table-layout: fixed;
 	width: 100%;
 }
 
@@ -57,38 +58,40 @@
 
 .Actions
 {
-	min-width: 100px;
-	max-width: 120px;
+	width: 7%;
 }
 
 .CreatedBy, .Assigned, .Status, .Priority
 {
-	min-width: 50px;
-	max-width: 70px;
+	width: 5%;
 	text-align: center;
 }
 
 .Created, .LastModified
 {
-	min-width: 70px;
-	max-width: 80px;
+	width: 7%;
 	text-align: center;
 }
 
 .Description
 {
-	min-width: 100px;
-	max-width: 400px;
+	width: 24%;
 }
 
 .Id
 {
+	width: 2%;
 	text-align: center;
+}
+
+.Title
+{
+	width: 30%;
 }
 
 .grouping-wrapper
 {
-	margin-bottom:30px;
+	margin-bottom:20px;
 }
 
 .groupHeader

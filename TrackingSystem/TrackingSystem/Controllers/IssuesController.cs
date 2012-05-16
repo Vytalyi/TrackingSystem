@@ -53,6 +53,8 @@ namespace TrackingSystem.Controllers
 
 				if (group == "assign")
 					ViewBag.GroupAssign = true;
+				else if (group == "priority")
+					ViewBag.GroupPriority = true;
 
 				// replace \r\n with <br />
 				for (int i = 0; i < viewModel.Count(); i++)
