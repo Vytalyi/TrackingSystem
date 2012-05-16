@@ -86,9 +86,12 @@
 	text-align: center;
 }
 
-.RowNumber
+.grouping-wrapper
 {
-    text-align: center;
-    min-width: 7px;
-    max-width: 10px;
+	margin-bottom:30px;
+}
+
+.groupHeader
+{
+	margin-bottom:10px;
 }

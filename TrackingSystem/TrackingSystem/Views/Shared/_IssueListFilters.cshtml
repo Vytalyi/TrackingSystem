@@ -1,0 +1,37 @@
+﻿<input type="button" id="ShowHideFilterBtn" value="Column Filter" class="btn" />
+
+<ul class="filter-list">
+	<li>@Html.CheckBox("Id", true)
+		<label for="Id">
+			Id</label></li>
+	<li>@Html.CheckBox("Title", true)
+		<label for="Title">
+			Title</label></li>
+	<li>@Html.CheckBox("Description", true)
+		<label for="Description">
+			Description</label></li>
+	<li>@Html.CheckBox("Created", true)
+		<label for="Created">
+			Created</label></li>
+	<li>@Html.CheckBox("Assigned", true)
+		<label for="Assigned">
+			Assigned</label></li>
+	<li>@Html.CheckBox("Status", true)
+		<label for="Status">
+			Status</label></li>
+	<li>@Html.CheckBox("CreatedBy", true)
+		<label for="CreatedBy">
+			Created by</label></li>
+	<li>@Html.CheckBox("LastModified", true)
+		<label for="LastModified">
+			Last modified</label></li>
+	<li>@Html.CheckBox("Priority", true)
+		<label for="Priority">
+			Priority</label></li>
+	@if (Session["loggedId"] != null)
+	{
+		<li>@Html.CheckBox("Actions", true)
+			<label for="Actions">
+				Actions</label></li>
+	}
+</ul>

@@ -1,0 +1,91 @@
+﻿@model IEnumerable<TrackingSystem.Models.Issue>
+
+<div class="issue-list-wrapper">
+	<table class="issue-list">
+		<tr>
+			<th class="Id">
+				@Html.ActionLink("Id", "List", new { sort = "id" }, null)
+			</th>
+			<th class="Title">
+				@Html.ActionLink("Title", "List", new { sort = "title" }, null)
+			</th>
+			<th class="Description">
+				@Html.ActionLink("Description", "List", new { sort = "description" }, null)
+			</th>
+			<th class="Created">
+				@Html.ActionLink("Created", "List", new { sort = "created" }, null)
+			</th>
+			<th class="Assigned">
+				@Html.ActionLink("Assigned", "List", new { sort = "assigned" }, null)
+			</th>
+			<th class="Status">
+				@Html.ActionLink("Status", "List", new { sort = "status" }, null)
+			</th>
+			<th class="CreatedBy">
+				@Html.ActionLink("Created by", "List", new { sort = "createdBy" }, null)
+			</th>
+			<th class="LastModified">
+				@Html.ActionLink("Last modified", "List", new { sort = "lastModified" }, null)
+			</th>
+			<th class="Priority">
+				@Html.ActionLink("Priority", "List", new { sort = "priority" }, null)
+			</th>
+			@if (Session["loggedId"] != null)
+			{
+				<th class="Actions">
+					Actions
+				</th>
+			}
+		</tr>
+		@foreach (var issue in Model)
+		{
+			<tr>
+				<td class="Id">
+					<a href='@Url.Action("Details", new { id = issue.Id })'>@Html.DisplayFor(modelItem => issue.Id)</a>
+				</td>
+				<td class="Title">
+					@Html.DisplayFor(modelItem => issue.Title)
+				</td>
+				<td class="Description">
+					@if (issue.Description.Length > 128)
+					{
+						@Html.Raw(
+							issue.Description.Substring(0, 128) + "..."
+						)
+					}
+					else
+					{
+						@Html.Raw(
+							issue.Description
+						)
+					}
+				</td>
+				<td class="Created">
+					@Html.DisplayFor(modelItem => issue.Created)
+				</td>
+				<td class="Assigned">
+					@Html.DisplayFor(modelItem => issue.AssignedTo.FullName)
+				</td>
+				<td class="Status">
+					@Html.DisplayFor(modelItem => issue.Status.Name)
+				</td>
+				<td class="CreatedBy">
+					@Html.DisplayFor(modelItem => issue.CreatedBy.FullName)
+				</td>
+				<td class="LastModified">
+					@Html.DisplayFor(modelItem => issue.LastModified)
+				</td>
+				<td class="Priority">
+					@Html.DisplayFor(modelItem => issue.Priority.Name)
+				</td>
+				@if (Session["loggedId"] != null)
+				{
+					<td class="Actions">
+						@Html.ActionLink("Edit", "Edit", new { id = issue.Id }, new { @class = "btn-action" })
+						@Html.ActionLink("Delete", "Delete", new { id = issue.Id }, new { @class = "btn-action" })
+					</td>
+				}
+			</tr>
+		}
+	</table>
+</div>

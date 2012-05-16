@@ -11,7 +11,7 @@ namespace TrackingSystem.Controllers
 	public class IssuesController : BaseController
 	{
 		[HttpGet]
-		public ActionResult List(string sort, int? userId)
+		public ActionResult List(string sort, int? userId, string group)
 		{
 			IEnumerable<Issue> viewModel = null;
 
@@ -50,6 +50,9 @@ namespace TrackingSystem.Controllers
 						viewModel = repo.GetIssues();
 						break;
 				}
+
+				if (group == "assign")
+					ViewBag.GroupAssign = true;
 
 				// replace \r\n with <br />
 				for (int i = 0; i < viewModel.Count(); i++)
