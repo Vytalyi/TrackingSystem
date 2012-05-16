@@ -63,30 +63,31 @@
 
 .CreatedBy, .Assigned, .Status, .Priority
 {
-	width: 5%;
+	width: 10%;
 	text-align: center;
 }
 
 .Created, .LastModified
 {
-	width: 7%;
+	width: 10%;
 	text-align: center;
 }
 
 .Description
 {
-	width: 24%;
+	width: 20%;
+	overflow: hidden;
 }
 
 .Id
 {
-	width: 2%;
+	width: 3%;
 	text-align: center;
 }
 
 .Title
 {
-	width: 30%;
+	width: 25%;
 }
 
 .grouping-wrapper
