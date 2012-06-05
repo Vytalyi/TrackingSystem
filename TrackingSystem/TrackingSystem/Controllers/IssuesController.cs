@@ -51,9 +51,12 @@ namespace TrackingSystem.Controllers
 						break;
 				}
 
-				if (group == "assign")
+				if (!string.IsNullOrEmpty(group))
+					ApplyGrouping(group);
+
+				if (GetGrouping() == "assign")
 					ViewBag.GroupAssign = true;
-				else if (group == "priority")
+				else if (GetGrouping() == "priority")
 					ViewBag.GroupPriority = true;
 
 				// replace \r\n with <br />

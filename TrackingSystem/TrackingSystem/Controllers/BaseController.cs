@@ -63,5 +63,28 @@ namespace TrackingSystem.Controllers
 			if (Session["loggedId"] != null)
 				Session.Remove("loggedId");
 		}
+
+		public void ApplyGrouping(string grouping)
+		{
+			if (Session["grouping"] != null)
+				Session.Add("grouping", grouping);
+			else
+				Session["grouping"] = grouping;
+		}
+
+		public void ResetGrouping()
+		{
+			if (Session["grouping"] != null)
+				Session.Remove("grouping");
+		}
+
+		public string GetGrouping()
+		{
+			string result = string.Empty;
+			if (Session["grouping"] != null)
+				result = Session["grouping"].ToString();
+
+			return result;
+		}
 	}
 }
