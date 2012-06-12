@@ -1,0 +1,10 @@
+﻿@model IEnumerable<TrackingSystem.Models.Issue>
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+	<script type="text/javascript">
+		SetCurrentTab('search');
+	</script>
+}
+@Html.Partial("_PageTitle", "Searching results:")

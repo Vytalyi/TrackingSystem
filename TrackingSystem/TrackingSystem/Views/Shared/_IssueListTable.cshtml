@@ -41,7 +41,7 @@
 		{
 			<tr>
 				<td class="Id">
-					<a href='@Url.Action("Details", new { id = issue.Id })'>@Html.DisplayFor(modelItem => issue.Id)</a>
+					<a href='@Url.Action("Details", "Issues",  new { id = issue.Id })'>@Html.DisplayFor(modelItem => issue.Id)</a>
 				</td>
 				<td class="Title">
 					@Html.DisplayFor(modelItem => issue.Title)
@@ -81,8 +81,8 @@
 				@if (Session["loggedId"] != null)
 				{
 					<td class="Actions">
-						@Html.ActionLink("Edit", "Edit", new { id = issue.Id }, new { @class = "btn-action" })
-						@Html.ActionLink("Delete", "Delete", new { id = issue.Id }, new { @class = "btn-action" })
+						@Html.ActionLink("Edit", "Edit", "Issues", new { id = issue.Id }, new { @class = "btn-action" })
+						@Html.ActionLink("Delete", "Delete", "Issues", new { id = issue.Id }, new { @class = "btn-action" })
 					</td>
 				}
 			</tr>

@@ -1,0 +1,94 @@
+﻿@model TrackingSystem.Models.Issue
+@{
+	ViewBag.Title = "Index";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	<link href="../../Content/Search/Index.css" rel="stylesheet" type="text/css" />
+	<link href="../../Content/Issues/List.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript">
+		SetCurrentTab('search');
+	</script>
+	
+	var repo = new TrackingSystem.Models.Repository.MsSqlRepository();
+}
+@Html.Partial("_PageTitle", "Searching for issues:")
+@using (Html.BeginForm())
+{
+	@Html.ValidationSummary(true)
+
+	<div class="search-panel">
+		<fieldset>
+			<legend>Search criteria</legend>
+			<table>
+				<tr>
+					<td>
+						Issue Id:
+					</td>
+					<td>@Html.EditorFor(item => item.Id)
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Issue title:
+					</td>
+					<td>@Html.EditorFor(item => item.Title)
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Issue description:
+					</td>
+					<td>@Html.EditorFor(item => item.Description)
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Assigned to:
+					</td>
+					<td>@Html.Raw(
+						Html.DropDownListFor(model => model.AssignedTo.Id, repo.GetUsers().Select(r =>
+						{
+							return new SelectListItem() { Text = r.FullName, Value = r.Id.ToString() };
+						})).ToHtmlString()
+					)
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Status:
+					</td>
+					<td>@Html.Raw(
+						Html.DropDownListFor(model => model.Status.Id, repo.GetStatuses().Select(r =>
+						{
+							return new SelectListItem() { Text = r.Name, Value = r.Id.ToString() };
+						})).ToHtmlString()
+					)
+					</td>
+				</tr>
+				<tr>
+					<td>
+						Created by:
+					</td>
+					<td>@Html.Raw(
+						Html.DropDownListFor(model => model.AssignedTo.Id, repo.GetUsers().Select(r =>
+						{
+							return new SelectListItem() { Text = r.FullName, Value = r.Id.ToString() };
+						})).ToHtmlString()
+					)
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+		<div>
+			<input type="submit" value="Start search" class="btn" />
+		</div>
+	</div>
+}
+@if (ViewBag.List != null)
+{
+	<div class="resuls">
+		<fieldset>
+			<legend>Results</legend>
+			@Html.Partial("_IssueListTable", ViewBag.List as IEnumerable<TrackingSystem.Models.Issue>)
+		</fieldset>
+	</div>
+}
