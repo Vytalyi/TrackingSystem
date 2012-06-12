@@ -24,8 +24,8 @@ namespace TrackingSystem.Controllers
 			List<Issue> viewModel = new List<Issue>();
 			viewModel = repo.GetIssues().Where(
 				r => (issue.Id != 0) ? r.Id == issue.Id : true &&
-					(!string.IsNullOrEmpty(issue.Title)) ? r.Title == issue.Title : true &&
-					(!string.IsNullOrEmpty(issue.Description)) ? r.Description == issue.Description : true &&
+					(!string.IsNullOrEmpty(issue.Title)) ? r.Title.Contains(issue.Title) : true &&
+					(!string.IsNullOrEmpty(issue.Description)) ? r.Description.Contains(issue.Description) : true &&
 					(issue.AssignedTo != null) ? r.AssignedTo.Id == issue.AssignedTo.Id : true &&
 					(issue.CreatedBy != null) ? r.CreatedBy.Id == issue.CreatedBy.Id : true
 				).ToList();
