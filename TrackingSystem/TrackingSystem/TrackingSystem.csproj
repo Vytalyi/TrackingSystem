@@ -69,6 +69,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\SearchIssue.cs" />
     <Compile Include="Models\Priority.cs" />
     <Compile Include="Models\Issue.cs" />
     <Compile Include="Models\Repository\IRepository.cs" />

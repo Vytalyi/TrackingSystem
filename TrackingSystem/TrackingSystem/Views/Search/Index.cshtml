@@ -1,4 +1,4 @@
-﻿@model TrackingSystem.Models.Issue
+﻿@model TrackingSystem.Models.SearchIssue
 @{
 	ViewBag.Title = "Index";
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,43 +21,43 @@
 			<table>
 				<tr>
 					<td>
-						<input type="checkbox" checked="checked" />
+						@Html.CheckBoxFor(item => item.IsFindById)
 					</td>
 					<td>
 						Issue Id:
 					</td>
-					<td>@Html.EditorFor(item => item.Id)
+					<td>@Html.EditorFor(item => item.Issue.Id)
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<input type="checkbox" checked="checked" />
+						@Html.CheckBoxFor(item => item.IsFindByTitle)
 					</td>
 					<td>
-						Issue title:
+						Issue Title:
 					</td>
-					<td>@Html.EditorFor(item => item.Title)
+					<td>@Html.EditorFor(item => item.Issue.Title)
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<input type="checkbox" checked="checked" />
+						@Html.CheckBoxFor(item => item.IsFindByDescription)
 					</td>
 					<td>
-						Issue description:
+						Issue Description:
 					</td>
-					<td>@Html.EditorFor(item => item.Description)
+					<td>@Html.EditorFor(item => item.Issue.Description)
 					</td>
 				</tr>
 				<tr>
 					<td>
-						<input type="checkbox" checked="checked" />
+						@Html.CheckBoxFor(item => item.IsFindByAssignedTo)
 					</td>
 					<td>
 						Assigned to:
 					</td>
 					<td>@Html.Raw(
-						Html.DropDownListFor(model => model.AssignedTo.Id, repo.GetUsers().Select(r =>
+						Html.DropDownListFor(model => model.Issue.AssignedTo.Id, repo.GetUsers().Select(r =>
 						{
 							return new SelectListItem() { Text = r.FullName, Value = r.Id.ToString() };
 						})).ToHtmlString()
@@ -66,13 +66,13 @@
 				</tr>
 				<tr>
 					<td>
-						<input type="checkbox" checked="checked" />
+						@Html.CheckBoxFor(item => item.IsFindByStatus)
 					</td>
 					<td>
-						Status:
+						Issue Status:
 					</td>
 					<td>@Html.Raw(
-						Html.DropDownListFor(model => model.Status.Id, repo.GetStatuses().Select(r =>
+						Html.DropDownListFor(model => model.Issue.Status.Id, repo.GetStatuses().Select(r =>
 						{
 							return new SelectListItem() { Text = r.Name, Value = r.Id.ToString() };
 						})).ToHtmlString()
@@ -81,13 +81,13 @@
 				</tr>
 				<tr>
 					<td>
-						<input type="checkbox" checked="checked" />
+						@Html.CheckBoxFor(item => item.IsFindByCreatedBy)
 					</td>
 					<td>
 						Created by:
 					</td>
 					<td>@Html.Raw(
-						Html.DropDownListFor(model => model.AssignedTo.Id, repo.GetUsers().Select(r =>
+						Html.DropDownListFor(model => model.Issue.CreatedBy.Id, repo.GetUsers().Select(r =>
 						{
 							return new SelectListItem() { Text = r.FullName, Value = r.Id.ToString() };
 						})).ToHtmlString()
